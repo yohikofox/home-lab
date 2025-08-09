@@ -179,4 +179,105 @@
     flex-direction: column;
     min-height: 0; /* Important pour éviter les conflits de flex */
   }
+  
+  /* Supprimer les limitations de largeur pour écrans larges */
+  .max-w-7xl {
+    max-width: none !important;
+  }
+  
+  .container {
+    max-width: none !important;
+  }
+  
+  .container-fluid {
+    max-width: none !important;
+  }
+  
+  /* Système de grille Bootstrap/Docusaurus - supprimer max-width sur larges écrans */
+  @media (min-width: 1280px) {
+    .col {
+      max-width: none !important;
+    }
+    
+    .col--3 {
+      max-width: none !important;
+      width: auto !important;
+      flex: 0 0 320px !important;
+      min-width: 280px !important;
+    }
+    
+    [class*="docItemCol"] {
+      max-width: none !important;
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+    }
+  }
+  
+  /* Responsive pour écrans moyens */
+  @media (max-width: 1279px) {
+    .col--3 {
+      width: auto !important;
+    }
+  }
+  
+  /* Docusaurus containers */
+  [class*="docMainContainer"] {
+    max-width: none !important;
+  }
+  
+  [class*="docItemContainer"] {
+    max-width: none !important;
+  }
+  
+  [class*="docItemWrapper"] {
+    max-width: none !important;
+  }
+  
+}
+
+@layer components {
+  /* TOC - Table of Contents styling avec Tailwind */
+  .theme-doc-toc-desktop {
+    @apply hidden lg:block flex-shrink-0;
+    @apply w-64 sticky top-6;
+    @apply max-h-[calc(100vh-4rem)] overflow-y-auto;
+    @apply pl-4 pr-4;
+  }
+  
+  .table-of-contents {
+    @apply space-y-1 text-sm m-0 p-0;
+  }
+  
+  .table-of-contents__left-border {
+    @apply border-l-2 border-border pl-3;
+  }
+  
+  .table-of-contents__link {
+    @apply block py-1 px-2 text-muted-foreground hover:text-foreground;
+    @apply transition-colors duration-200;
+    @apply no-underline text-sm;
+  }
+  
+  .table-of-contents__link--active {
+    @apply text-primary font-medium;
+  }
+  
+  .table-of-contents__link:hover {
+    @apply text-foreground no-underline;
+  }
+  
+  /* Nested TOC items */
+  .table-of-contents .table-of-contents {
+    @apply ml-3 mt-1 border-l-0 pl-0;
+  }
+  
+  /* TOC Mobile */
+  .theme-doc-toc-mobile {
+    @apply xl:hidden mb-4;
+  }
+  
+  /* Limitation de largeur pour le contenu principal sur très grands écrans */
+  .theme-doc-markdown {
+    @apply max-w-4xl;
+  }
 }

@@ -9,10 +9,13 @@ export function useTheme() {
   useEffect(() => {
     const root = window.document.documentElement;
     
+    // Force sync - remove both classes first to avoid conflicts
+    root.classList.remove('dark', 'light');
+    
     if (colorMode === 'dark') {
       root.classList.add('dark');
     } else {
-      root.classList.remove('dark');
+      root.classList.add('light');
     }
   }, [colorMode]);
 

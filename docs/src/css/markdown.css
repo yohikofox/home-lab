@@ -87,36 +87,52 @@
 
 /* Blocs de code */
 .markdown pre {
-  @apply bg-code-bg text-code-text p-4 rounded-lg overflow-x-auto my-4;
+  @apply bg-code-bg text-code-text p-4 rounded-lg overflow-x-auto my-4 relative;
 }
 
 .markdown pre code {
   @apply bg-transparent px-0 py-0 text-inherit;
 }
 
+/* Bouton copy to clipboard - visible uniquement au hover */
+[class*="codeBlockContent"] [class*="buttonGroup"] .clean-btn {
+  opacity: 0 !important;
+  transition: opacity 0.2s ease-in-out !important;
+}
+
+[class*="codeBlockContent"]:hover [class*="buttonGroup"] .clean-btn {
+  opacity: 1 !important;
+}
+
 /* Tableaux */
 .markdown table {
-  @apply w-full border-collapse border border-border rounded-lg my-4 overflow-hidden;
+  @apply w-full border-collapse my-4;
+  border-radius: 0 !important;
 }
 
 .markdown thead {
   @apply bg-muted;
+  border-radius: 0 !important;
 }
 
 .markdown th {
   @apply border border-border px-4 py-2 text-left font-semibold text-foreground;
+  border-radius: 0 !important;
 }
 
 .markdown td {
   @apply border border-border px-4 py-2 text-muted-foreground;
+  border-radius: 0 !important;
 }
 
 .markdown tbody tr:nth-child(even) {
   @apply bg-muted/30;
+  border-radius: 0 !important;
 }
 
 .markdown tbody tr:hover {
   @apply bg-muted/50;
+  border-radius: 0 !important;
 }
 
 /* Images */
