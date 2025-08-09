@@ -273,7 +273,28 @@
   
   /* TOC Mobile */
   .theme-doc-toc-mobile {
-    @apply xl:hidden mb-4;
+    @apply xl:hidden mb-6;
+    @apply bg-card border border-border rounded-lg p-4;
+  }
+  
+  .theme-doc-toc-mobile .table-of-contents__left-border {
+    @apply border-l-2 border-primary/30 pl-3 ml-0;
+  }
+  
+  .theme-doc-toc-mobile .table-of-contents__link {
+    @apply text-sm py-1.5 px-2 rounded-md;
+    @apply hover:bg-accent hover:text-accent-foreground;
+    @apply transition-all duration-200;
+  }
+  
+  .theme-doc-toc-mobile .table-of-contents__link--active {
+    @apply bg-primary/10 text-primary font-medium;
+  }
+  
+  /* Titre de la TOC mobile */
+  .theme-doc-toc-mobile h2 {
+    @apply text-base font-semibold text-foreground mb-3 pb-2;
+    @apply border-b border-border/50;
   }
   
   /* Limitation de largeur pour le contenu principal sur très grands écrans */

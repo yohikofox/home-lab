@@ -44,7 +44,7 @@ export default function DocItemLayout({ children }: Props): ReactNode {
   const { metadata } = useDoc();
   return (
     <div className="flex w-full justify-between">
-      <div className={clsx("w-full", !docTOC.hidden && styles.docItemCol)}>
+      <div className={clsx("w-full px-4 md:px-0", !docTOC.hidden && styles.docItemCol)}>
         <ContentVisibility metadata={metadata} />
         <DocVersionBanner />
         <div className={styles.docItemContainer}>
