@@ -266,17 +266,25 @@ const enhancementStyles = `
   /* Copy button styles */
   .copy-button {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 12px;
+    right: 12px;
     background: var(--homelab-surface-glass-strong);
     border: 1px solid var(--homelab-surface-glass);
     color: var(--homelab-text-tertiary);
     font-size: 0.75rem;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    border-radius: 6px;
     cursor: pointer;
     transition: var(--homelab-transition-fast);
     backdrop-filter: blur(10px);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  pre:hover .copy-button {
+    opacity: 1;
+    visibility: visible;
   }
   
   .copy-button:hover {

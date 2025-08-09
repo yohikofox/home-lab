@@ -97,33 +97,33 @@ graph TB
 ### PC Lenovo - Stack Docker
 
 #### Gestion & Infrastructure
-| Service | Port | Description | Usage |
-|---------|------|-------------|-------|
-| **Portainer** | 9000 | Interface de gestion Docker | Administration containers |
-| **Netdata** | 19999 | Monitoring système temps réel | Surveillance performance |
-| **Nginx Proxy Manager** | 80/443 | Reverse proxy + SSL | Exposition sécurisée services |
+| Service                 | Port   | Description                   | Usage                         |
+|-------------------------|--------|-------------------------------|-------------------------------|
+| **Portainer**           | 9000   | Interface de gestion Docker   | Administration containers     |
+| **Netdata**             | 19999  | Monitoring système temps réel | Surveillance performance      |
+| **Nginx Proxy Manager** | 80/443 | Reverse proxy + SSL           | Exposition sécurisée services |
 
 #### Services Applicatifs
-| Service | Domaine | Description | Usage |
-|---------|---------|-------------|-------|
-| **Vaultwarden** | vault.yolo.yt | Gestionnaire de mots de passe | Coffre-fort personnel |
-| **Zitadel** | auth.yolo.yt | Gestionnaire d'identité/SSO | Authentification centralisée |
-| **Snipe-IT** | assets.yolo.yt | Gestion d'inventaire IT | Suivi équipements |
-| **OctoPrint** | print.yolo.yt | Gestion imprimante 3D | Impression 3D à distance |
+| Service         | Domaine        | Description                   | Usage                        |
+|-----------------|----------------|-------------------------------|------------------------------|
+| **Vaultwarden** | vault.yolo.yt  | Gestionnaire de mots de passe | Coffre-fort personnel        |
+| **Zitadel**     | auth.yolo.yt   | Gestionnaire d'identité/SSO   | Authentification centralisée |
+| **Snipe-IT**    | assets.yolo.yt | Gestion d'inventaire IT       | Suivi équipements            |
+| **OctoPrint**   | print.yolo.yt  | Gestion imprimante 3D         | Impression 3D à distance     |
 
 #### Services Réseau
-| Service | Domaine | Description | Usage |
-|---------|---------|-------------|-------|
+| Service    | Domaine    | Description       | Usage           |
+|------------|------------|-------------------|-----------------|
 | **PiHole** | pi.yolo.yt | DNS + Blocage pub | Filtrage réseau |
 
 ### Raspberry Pi 4 - Home Assistant OS
 
 #### Core Domotique
-| Service | Description | Usage |
-|---------|-------------|-------|
-| **Home Assistant** | Hub domotique principal | Automatisations et interface |
-| **Zigbee2MQTT** | Passerelle protocole Zigbee | Capteurs et actionneurs |
-| **Frigate** | Analyse vidéo IA | Surveillance et détection |
+| Service            | Description                 | Usage                        |
+|--------------------|-----------------------------|------------------------------|
+| **Home Assistant** | Hub domotique principal     | Automatisations et interface |
+| **Zigbee2MQTT**    | Passerelle protocole Zigbee | Capteurs et actionneurs      |
+| **Frigate**        | Analyse vidéo IA            | Surveillance et détection    |
 
 #### Add-ons Home Assistant
 - **File Editor** : Édition configuration

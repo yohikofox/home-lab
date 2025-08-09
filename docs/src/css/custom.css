@@ -1,6 +1,6 @@
 /**
  * HomeLab Pro Theme - Modern Documentation Design
- * Version: 2.1.0 - FIXED: Dark/Light Mode + Mermaid + Margins
+ * Version: 2.6.0 - FINAL: All fixes complete - Mermaid texts now bright white in dark mode
  * Optimized for technical documentation and infrastructure guides
  */
 
@@ -122,10 +122,48 @@
   --ifm-color-primary-lighter: #3385ff;
   --ifm-color-primary-lightest: #66a3ff;
   
-  /* === Light Mode Overrides === */
+  /* === Light Mode Color Overrides === */
   --homelab-text-primary: #1e293b;
   --homelab-text-secondary: #475569;
   --homelab-text-tertiary: #64748b;
+  --homelab-text-quaternary: #94a3b8;
+  
+  /* === Light Mode Backgrounds === */
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f8fafc;
+  --ifm-color-content: #1e293b;
+  --ifm-color-content-secondary: #475569;
+  
+  /* === Light Mode Surfaces === */
+  --homelab-dark-primary: #ffffff;
+  --homelab-dark-secondary: #f8fafc;
+  --homelab-dark-tertiary: #e2e8f0;
+  --homelab-surface-1: rgba(248, 250, 252, 0.95);
+  --homelab-surface-2: rgba(226, 232, 240, 0.8);
+  --homelab-surface-glass: rgba(0, 0, 0, 0.05);
+  --homelab-surface-glass-strong: rgba(0, 0, 0, 0.1);
+  
+  /* === Light Mode Navigation === */
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.95);
+  --ifm-footer-background-color: #f8fafc;
+  
+  /* === Light Mode Code Blocks === */
+  --ifm-code-background: #e2e8f0;
+  --ifm-pre-background: #e2e8f0;
+  
+  /* === Light Mode Borders === */
+  --ifm-blockquote-border-left-color: var(--homelab-blue);
+  --ifm-hr-background-color: #e2e8f0;
+  
+  /* === Light Mode Color Redefinitions === */
+  --homelab-cyan: #0066cc;  /* Plus foncé pour le contraste */
+  --homelab-green: #16a34a;  /* Plus foncé pour le contraste en light mode */
+  
+  /* === Light Mode Links === */
+  --ifm-link-color: #0066cc;
+  --ifm-link-hover-color: #0052cc;
+  --ifm-menu-color-active: #0066cc;
+  --ifm-toc-link-color: #475569;
   
   /* === Mermaid Variables - Light Mode Override === */
   --mermaid-bg-color: rgba(255, 255, 255, 0.9);
@@ -133,6 +171,12 @@
   --mermaid-secondary-color: #f8fafc;
   --mermaid-text-color: #1e293b;
   --mermaid-border-color: var(--homelab-blue);
+  
+  /* === Light Mode Shadows === */
+  --homelab-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --homelab-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --homelab-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --homelab-shadow-cyber: 0 0 20px rgba(0, 102, 255, 0.2);
 }
 
 /* ==========================================
@@ -258,9 +302,19 @@ article {
   border: 1px solid var(--homelab-surface-glass);
 }
 
-/* Content wrapper improvements for better margins */
+/* Content wrapper improvements for better margins and padding */
 .theme-doc-markdown {
-  padding: 0 var(--ifm-global-spacing);
+  padding: var(--ifm-global-spacing);
+}
+
+/* Main content area padding improvements */
+.container.padding-top--md {
+  padding: var(--ifm-global-spacing) var(--ifm-global-spacing);
+}
+
+/* Article content padding */
+article .container {
+  padding: var(--ifm-global-spacing);
 }
 
 .container {
@@ -325,6 +379,12 @@ p {
   color: var(--homelab-text-secondary);
 }
 
+/* Exclude Mermaid from paragraph styling that could interfere */
+.mermaid p {
+  color: inherit !important;
+  margin: 0 !important;
+}
+
 /* ==========================================
    CODE BLOCKS & SYNTAX HIGHLIGHTING
    ========================================== */
@@ -346,6 +406,8 @@ pre {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow-x: auto;
+  margin: 1.5rem 0;
+  padding: 1rem;
 }
 
 pre code {
@@ -370,15 +432,89 @@ pre code {
   overflow-x: auto;
 }
 
-/* CRITICAL: Force text colors for Mermaid elements */
+/* CRITICAL: Force text colors for Mermaid elements - COMPREHENSIVE FIX */
 .mermaid text,
 .mermaid .node text,
 .mermaid .label,
 .mermaid .messageText,
 .mermaid .actor-text,
-.mermaid .flowchart-label {
+.mermaid .flowchart-label,
+.mermaid .nodeLabel,
+.mermaid .edgeLabel,
+.mermaid .cluster-label,
+.mermaid .titleText,
+.mermaid foreignObject,
+.mermaid foreignObject div,
+.mermaid foreignObject span,
+.mermaid foreignObject p,
+.mermaid tspan,
+.mermaid .labelText,
+.mermaid .legend text,
+.mermaid .legend .label,
+.mermaid .section0 text,
+.mermaid .section1 text,
+.mermaid .section2 text,
+.mermaid .section3 text {
   fill: var(--mermaid-text-color) !important;
   color: var(--mermaid-text-color) !important;
+  stroke: none !important;
+}
+
+/* ULTRA ROBUST: Force override for dark mode with nuclear option */
+[data-theme='dark'] .mermaid text,
+[data-theme='dark'] .mermaid .node text,
+[data-theme='dark'] .mermaid .label,
+[data-theme='dark'] .mermaid .nodeLabel,
+[data-theme='dark'] .mermaid .edgeLabel,
+[data-theme='dark'] .mermaid .messageText,
+[data-theme='dark'] .mermaid .actor-text,
+[data-theme='dark'] .mermaid .flowchart-label,
+[data-theme='dark'] .mermaid .cluster-label,
+[data-theme='dark'] .mermaid .titleText,
+[data-theme='dark'] .mermaid .labelText,
+[data-theme='dark'] .mermaid .legend text,
+[data-theme='dark'] .mermaid .legend .label,
+[data-theme='dark'] .mermaid .section0 text,
+[data-theme='dark'] .mermaid .section1 text,
+[data-theme='dark'] .mermaid .section2 text,
+[data-theme='dark'] .mermaid .section3 text,
+[data-theme='dark'] .mermaid foreignObject,
+[data-theme='dark'] .mermaid foreignObject *,
+[data-theme='dark'] .mermaid tspan {
+  fill: #f8fafc !important;
+  color: #f8fafc !important;
+  stroke: none !important;
+}
+
+/* Improved Mermaid theme handling with Docusaurus config */
+/* Prevent theme color inheritance in Mermaid */
+.mermaid * {
+  color: unset !important;
+}
+
+[data-theme='dark'] .mermaid text {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+[data-theme='dark'] .mermaid .node text {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+[data-theme='dark'] .mermaid .edgeLabel {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+[data-theme='dark'] .mermaid .cluster-label {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* Allow Mermaid to use its own theming */
+[data-theme='light'] .mermaid * {
+  color: unset !important;
 }
 
 /* Node and shape styling */
