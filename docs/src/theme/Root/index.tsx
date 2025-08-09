@@ -1,55 +1,40 @@
-import React from 'react';
-import { useEffect } from 'react';
-
-// Script inline pour éviter le flash pendant l'hydratation
-const ThemeInitScript = `
-(function() {
-  try {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = savedTheme || (prefersDark ? 'dark' : 'light');
-    
-    const root = document.documentElement;
-    
-    // Clear existing classes
-    root.classList.remove('dark', 'light');
-    
-    // Add the correct theme class immediately
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.add('light');
-    }
-  } catch (e) {
-    console.warn('Theme initialization failed:', e);
-  }
-})();
-`;
+import React, { useEffect } from 'react';
 
 export default function Root({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Ensure theme consistency after hydration
-    const ensureThemeConsistency = () => {
+    // Observer pour synchroniser les classes Tailwind avec data-theme de Docusaurus
+    const syncTheme = () => {
       const root = document.documentElement;
-      const docusaurusTheme = document.documentElement.getAttribute('data-theme');
+      const currentTheme = root.getAttribute('data-theme');
       
-      if (docusaurusTheme === 'dark' && !root.classList.contains('dark')) {
-        root.classList.remove('light');
+      // Toujours nettoyer d'abord
+      root.classList.remove('dark', 'light');
+      
+      // Appliquer la classe correspondante
+      if (currentTheme === 'dark') {
         root.classList.add('dark');
-      } else if (docusaurusTheme === 'light' && !root.classList.contains('light')) {
-        root.classList.remove('dark');
+      } else {
         root.classList.add('light');
       }
+      
+      console.log('Theme synced:', currentTheme, 'Classes:', Array.from(root.classList));
     };
 
-    // Run immediately
-    ensureThemeConsistency();
+    // Synchronisation initiale avec délai pour s'assurer que Docusaurus a fini l'initialisation
+    const initialSync = () => {
+      syncTheme();
+      // Backup sync après un court délai
+      setTimeout(syncTheme, 100);
+      setTimeout(syncTheme, 500);
+    };
+    
+    initialSync();
 
-    // Also run when data-theme changes (fallback)
+    // Observer les changements de data-theme
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          ensureThemeConsistency();
+          syncTheme();
         }
       });
     });
@@ -59,17 +44,30 @@ export default function Root({ children }: { children: React.ReactNode }) {
       attributeFilter: ['data-theme']
     });
 
-    return () => observer.disconnect();
+    // Observer aussi les changements de classe pour débugger
+    const classObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const root = document.documentElement;
+          const hasThemeClass = root.classList.contains('dark') || root.classList.contains('light');
+          if (!hasThemeClass) {
+            console.warn('Theme classes removed, resyncing...');
+            syncTheme();
+          }
+        }
+      });
+    });
+
+    classObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    return () => {
+      observer.disconnect();
+      classObserver.disconnect();
+    };
   }, []);
 
-  return (
-    <>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: ThemeInitScript,
-        }}
-      />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

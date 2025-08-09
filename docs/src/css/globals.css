@@ -233,6 +233,13 @@
     max-width: none !important;
   }
   
+  /* Supprimer les bordures par défaut des containers */
+  [class*="docItemContainer"],
+  [class*="docItemCol"] {
+    border: none !important;
+    border-left: none !important;
+  }
+  
 }
 
 @layer components {
