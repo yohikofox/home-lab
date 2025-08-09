@@ -1,6 +1,6 @@
 import React from "react";
 import { useColorMode } from "@docusaurus/theme-common";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Sun, Moon } from "lucide-react";
 
 // 🎨 Simple Toggle: Light ↔ Dark (default: System)
