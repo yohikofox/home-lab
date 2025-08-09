@@ -71,6 +71,10 @@ const config: Config = {
 
   themes: ['@docusaurus/theme-mermaid'],
   
+  plugins: [
+    './plugins/tailwind-plugin.ts',
+  ],
+  
   markdown: {
     mermaid: true,
   },
