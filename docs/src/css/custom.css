@@ -1,30 +1,609 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * HomeLab Pro Theme - Modern Documentation Design
+ * Version: 1.0.0 
+ * Optimized for technical documentation and infrastructure guides
  */
 
-/* You can override the default Infima variables here. */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* ==========================================
+   DESIGN TOKENS - HomeLab CyberTech Theme
+   ========================================== */
+
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  /* === Color Palette - CyberLab === */
+  --homelab-dark-primary: #0a0f1c;
+  --homelab-dark-secondary: #1a2332;
+  --homelab-dark-tertiary: #2d3748;
+  --homelab-dark-quaternary: #374151;
+  
+  --homelab-cyan: #00d4ff;
+  --homelab-green: #39ff14;
+  --homelab-blue: #0066ff;
+  --homelab-purple: #8b5cf6;
+  --homelab-orange: #ff6b35;
+  
+  --homelab-success: #10b981;
+  --homelab-warning: #f59e0b;
+  --homelab-error: #ef4444;
+  --homelab-info: #3b82f6;
+  
+  --homelab-surface-1: rgba(26, 35, 50, 0.95);
+  --homelab-surface-2: rgba(45, 55, 72, 0.8);
+  --homelab-surface-glass: rgba(255, 255, 255, 0.05);
+  --homelab-surface-glass-strong: rgba(255, 255, 255, 0.1);
+  
+  --homelab-text-primary: #f8fafc;
+  --homelab-text-secondary: #e2e8f0;
+  --homelab-text-tertiary: #94a3b8;
+  --homelab-text-quaternary: #64748b;
+  
+  /* === Typography === */
+  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --ifm-heading-font-family: 'Space Grotesk', 'Inter', sans-serif;
+  
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.6;
+  
+  /* === Spacing & Sizing === */
+  --ifm-spacing-horizontal: 1.5rem;
+  --ifm-spacing-vertical: 1.5rem;
+  --ifm-container-width-xl: 1400px;
+  --ifm-border-radius: 8px;
+  --ifm-border-radius-lg: 12px;
+  
+  /* === Shadows === */
+  --homelab-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --homelab-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --homelab-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --homelab-shadow-cyber: 0 0 20px rgba(0, 212, 255, 0.3);
+  
+  /* === Animations === */
+  --homelab-transition-fast: 0.15s ease-out;
+  --homelab-transition-normal: 0.25s ease-out;
+  --homelab-transition-slow: 0.4s ease-out;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* Dark theme overrides */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: var(--homelab-cyan);
+  --ifm-color-primary-dark: #00b8e6;
+  --ifm-color-primary-darker: #00a8d6;
+  --ifm-color-primary-darkest: #008bb3;
+  --ifm-color-primary-light: #33dfff;
+  --ifm-color-primary-lighter: #4de3ff;
+  --ifm-color-primary-lightest: #80ebff;
+  
+  --ifm-background-color: var(--homelab-dark-primary);
+  --ifm-background-surface-color: var(--homelab-dark-secondary);
+  --ifm-color-content: var(--homelab-text-primary);
+  --ifm-color-content-secondary: var(--homelab-text-secondary);
+  
+  --ifm-navbar-background-color: var(--homelab-surface-1);
+  --ifm-footer-background-color: var(--homelab-dark-secondary);
+  
+  --ifm-code-background: var(--homelab-dark-tertiary);
+  --ifm-pre-background: var(--homelab-dark-tertiary);
+  
+  --ifm-blockquote-border-left-color: var(--homelab-cyan);
+  --ifm-hr-background-color: var(--homelab-dark-tertiary);
+}
+
+/* Light theme compatibility */
+[data-theme='light'] {
+  --ifm-color-primary: var(--homelab-blue);
+  --ifm-color-primary-dark: #0052cc;
+  --ifm-color-primary-darker: #004db3;
+  --ifm-color-primary-darkest: #003d99;
+  --ifm-color-primary-light: #1a75ff;
+  --ifm-color-primary-lighter: #3385ff;
+  --ifm-color-primary-lightest: #66a3ff;
+}
+
+/* ==========================================
+   GLOBAL STYLES
+   ========================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-feature-settings: 'liga', 'kern';
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================
+   NAVIGATION & HEADER
+   ========================================== */
+
+.navbar {
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--homelab-surface-glass);
+  box-shadow: var(--homelab-shadow-sm);
+}
+
+.navbar__brand {
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--homelab-cyan) !important;
+  text-decoration: none;
+  transition: var(--homelab-transition-fast);
+}
+
+.navbar__brand:hover {
+  color: var(--homelab-green) !important;
+  text-shadow: 0 0 8px var(--homelab-green);
+}
+
+.navbar__item {
+  font-weight: 500;
+}
+
+.navbar__link {
+  transition: var(--homelab-transition-fast);
+  position: relative;
+}
+
+.navbar__link:hover {
+  color: var(--homelab-cyan) !important;
+}
+
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--homelab-cyan), var(--homelab-green));
+  transition: width var(--homelab-transition-normal);
+}
+
+.navbar__link:hover::after {
+  width: 100%;
+}
+
+/* ==========================================
+   SIDEBAR NAVIGATION
+   ========================================== */
+
+.theme-doc-sidebar-container {
+  background: var(--homelab-surface-1);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--homelab-surface-glass);
+}
+
+.menu__list-item {
+  margin: 0.25rem 0;
+}
+
+.menu__link {
+  border-radius: var(--ifm-border-radius);
+  transition: var(--homelab-transition-fast);
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu__link:hover {
+  background: var(--homelab-surface-glass-strong);
+  color: var(--homelab-cyan);
+}
+
+.menu__link--active {
+  background: linear-gradient(135deg, var(--homelab-surface-glass-strong), transparent);
+  color: var(--homelab-cyan);
+  border-left: 3px solid var(--homelab-cyan);
+  box-shadow: inset 0 0 8px rgba(0, 212, 255, 0.2);
+}
+
+/* ==========================================
+   MAIN CONTENT AREA
+   ========================================== */
+
+.main-wrapper {
+  background: linear-gradient(135deg, var(--homelab-dark-primary) 0%, var(--homelab-dark-secondary) 100%);
+  min-height: 100vh;
+}
+
+article {
+  background: var(--homelab-surface-1);
+  border-radius: var(--ifm-border-radius-lg);
+  box-shadow: var(--homelab-shadow-md);
+  margin: 2rem 0;
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--homelab-surface-glass);
+}
+
+/* ==========================================
+   TYPOGRAPHY ENHANCEMENTS
+   ========================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: var(--homelab-text-primary);
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--homelab-cyan);
+  border-bottom: 2px solid var(--homelab-surface-glass);
+  padding-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: var(--homelab-green);
+}
+
+h4 {
+  font-size: 1.25rem;
+  color: var(--homelab-purple);
+}
+
+p {
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  color: var(--homelab-text-secondary);
+}
+
+/* ==========================================
+   CODE BLOCKS & SYNTAX HIGHLIGHTING
+   ========================================== */
+
+code {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9em;
+  background: var(--homelab-dark-tertiary);
+  color: var(--homelab-green);
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+  border: 1px solid var(--homelab-surface-glass);
+}
+
+pre {
+  background: var(--homelab-dark-tertiary) !important;
+  border: 1px solid var(--homelab-surface-glass);
+  border-radius: var(--ifm-border-radius);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow-x: auto;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--homelab-text-primary);
+}
+
+/* ==========================================
+   MERMAID DIAGRAMS ENHANCEMENT
+   ========================================== */
+
+.mermaid {
+  background: var(--homelab-surface-1) !important;
+  border: 2px solid var(--homelab-surface-glass);
+  border-radius: var(--ifm-border-radius-lg);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  box-shadow: var(--homelab-shadow-md);
+  backdrop-filter: blur(10px);
+}
+
+/* ==========================================
+   ADMONITIONS & ALERTS
+   ========================================== */
+
+.alert {
+  border-radius: var(--ifm-border-radius);
+  border-left: 4px solid;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--homelab-shadow-sm);
+  margin: 1.5rem 0;
+}
+
+.alert--info {
+  background: rgba(59, 130, 246, 0.1);
+  border-left-color: var(--homelab-info);
+}
+
+.alert--success {
+  background: rgba(16, 185, 129, 0.1);
+  border-left-color: var(--homelab-success);
+}
+
+.alert--warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-left-color: var(--homelab-warning);
+}
+
+.alert--danger {
+  background: rgba(239, 68, 68, 0.1);
+  border-left-color: var(--homelab-error);
+}
+
+/* ==========================================
+   TABLES
+   ========================================== */
+
+table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  width: 100%;
+  background: var(--homelab-surface-1);
+  border-radius: var(--ifm-border-radius);
+  overflow: hidden;
+  box-shadow: var(--homelab-shadow-sm);
+}
+
+thead {
+  background: var(--homelab-dark-tertiary);
+}
+
+th {
+  color: var(--homelab-cyan);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+  border-bottom: 2px solid var(--homelab-surface-glass);
+}
+
+td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--homelab-surface-glass);
+  color: var(--homelab-text-secondary);
+}
+
+tbody tr:hover {
+  background: var(--homelab-surface-glass);
+  transition: var(--homelab-transition-fast);
+}
+
+/* ==========================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ========================================== */
+
+.button {
+  border-radius: var(--ifm-border-radius);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.025em;
+  transition: var(--homelab-transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.button--primary {
+  background: linear-gradient(135deg, var(--homelab-cyan), var(--homelab-blue));
+  border: none;
+  box-shadow: var(--homelab-shadow-md);
+}
+
+.button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--homelab-shadow-lg), var(--homelab-shadow-cyber);
+}
+
+/* ==========================================
+   PAGINATION
+   ========================================== */
+
+.pagination-nav {
+  margin: 2rem 0;
+}
+
+.pagination-nav__link {
+  background: var(--homelab-surface-1);
+  border: 1px solid var(--homelab-surface-glass);
+  border-radius: var(--ifm-border-radius);
+  transition: var(--homelab-transition-normal);
+  backdrop-filter: blur(10px);
+}
+
+.pagination-nav__link:hover {
+  background: var(--homelab-surface-glass-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--homelab-shadow-md);
+  border-color: var(--homelab-cyan);
+}
+
+.pagination-nav__sublabel {
+  color: var(--homelab-text-tertiary);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pagination-nav__label {
+  color: var(--homelab-cyan);
+  font-weight: 600;
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+
+.footer {
+  background: linear-gradient(135deg, var(--homelab-dark-secondary), var(--homelab-dark-primary));
+  border-top: 1px solid var(--homelab-surface-glass);
+  backdrop-filter: blur(20px);
+}
+
+.footer__title {
+  color: var(--homelab-cyan);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 600;
+}
+
+.footer__link-item {
+  transition: var(--homelab-transition-fast);
+}
+
+.footer__link-item:hover {
+  color: var(--homelab-green);
+}
+
+/* ==========================================
+   SEARCH & TOC
+   ========================================== */
+
+.table-of-contents {
+  background: var(--homelab-surface-1);
+  border-radius: var(--ifm-border-radius);
+  border: 1px solid var(--homelab-surface-glass);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+}
+
+.table-of-contents__link {
+  color: var(--homelab-text-tertiary);
+  transition: var(--homelab-transition-fast);
+}
+
+.table-of-contents__link:hover,
+.table-of-contents__link--active {
+  color: var(--homelab-cyan);
+}
+
+.table-of-contents__link--active {
+  border-left: 2px solid var(--homelab-cyan);
+  padding-left: 0.75rem;
+  margin-left: -0.75rem;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 996px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  
+  article {
+    margin: 1rem 0;
+    border-radius: var(--ifm-border-radius);
+  }
+  
+  .navbar__brand {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --ifm-spacing-horizontal: 1rem;
+  }
+  
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  
+  .mermaid {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  table {
+    font-size: 0.9rem;
+  }
+  
+  th, td {
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+/* ==========================================
+   PERFORMANCE OPTIMIZATIONS
+   ========================================== */
+
+/* Hardware acceleration for smooth animations */
+.navbar, .menu__link, .button, article {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+/* ==========================================
+   CUSTOM UTILITY CLASSES
+   ========================================== */
+
+.cyber-glow {
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+  border: 1px solid var(--homelab-cyan);
+}
+
+.glass-effect {
+  background: var(--homelab-surface-glass-strong);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--homelab-surface-glass);
+}
+
+.tech-gradient {
+  background: linear-gradient(135deg, var(--homelab-cyan), var(--homelab-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ==========================================
+   PRINT STYLES
+   ========================================== */
+
+@media print {
+  .navbar,
+  .menu,
+  .pagination-nav,
+  .table-of-contents,
+  .footer {
+    display: none !important;
+  }
+  
+  article {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: black !important;
+    text-shadow: none !important;
+  }
+  
+  code, pre {
+    background: #f5f5f5 !important;
+    color: black !important;
+  }
 }
