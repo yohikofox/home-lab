@@ -44,6 +44,15 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Variables personnalisées pour hero section */
+  --hero-from: oklch(0.97 0 0);
+  --hero-via: oklch(0.948 0 0);  
+  --hero-to: oklch(0.97 0 0);
+  
+  /* Variables pour blocs de code */
+  --code-bg: oklch(0.95 0 0);
+  --code-text: oklch(0.2 0 0);
 }
 
 .dark {
@@ -79,6 +88,15 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+  
+  /* Variables personnalisées pour hero section en dark mode */
+  --hero-from: oklch(0.15 0 0);
+  --hero-via: oklch(0.18 0 0);  
+  --hero-to: oklch(0.15 0 0);
+  
+  /* Variables pour blocs de code en dark mode */
+  --code-bg: oklch(0.15 0 0);
+  --code-text: oklch(0.92 0 0);
 }
 
 @theme inline {
@@ -118,6 +136,15 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Variables personnalisées pour hero section */
+  --color-hero-from: var(--hero-from);
+  --color-hero-via: var(--hero-via);
+  --color-hero-to: var(--hero-to);
+  
+  /* Variables pour blocs de code */
+  --color-code-bg: var(--code-bg);
+  --color-code-text: var(--code-text);
 }
 
 @layer base {
@@ -126,5 +153,30 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Fix pour que le layout s'étende jusqu'au footer */
+  html, body {
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  body {
+    overflow-x: hidden;
+  }
+  
+  #__docusaurus {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Ensure main content area takes full height */
+  .main-wrapper,
+  .theme-doc-root {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Important pour éviter les conflits de flex */
   }
 }

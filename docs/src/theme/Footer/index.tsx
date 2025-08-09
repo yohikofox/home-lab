@@ -14,14 +14,14 @@ export default function Footer() {
   const { copyright, links, logo } = footer;
 
   return (
-    <footer className="border-t bg-slate-900 text-slate-100 py-8 mt-16">
+    <footer className="border-t bg-background text-foreground py-8">
       <div className="mx-auto max-w-7xl px-4">
         {/* Links Grid - Mobile: 1 column centered, Desktop: 3+ columns */}
         {links && links.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 md:justify-items-center">
             {links.map((linkColumn, i) => (
               <div key={i} className="text-center md:text-left">
-                <h3 className="font-semibold text-slate-100 mb-4 text-base">
+                <h3 className="font-semibold text-foreground mb-4 text-base">
                   {linkColumn.title}
                 </h3>
                 <ul className="space-y-2">
@@ -30,7 +30,7 @@ export default function Footer() {
                       {item.to ? (
                         <Link
                           to={item.to}
-                          className="text-sm text-slate-300 hover:text-slate-100 transition-colors"
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
                           {item.label}
                         </Link>
@@ -39,7 +39,7 @@ export default function Footer() {
                           href={item.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-slate-300 hover:text-slate-100 transition-colors"
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
                           {item.label}
                         </a>
@@ -53,7 +53,7 @@ export default function Footer() {
         )}
 
         {/* Bottom Section: Logo + Copyright */}
-        <div className="pt-8 border-t border-slate-700">
+        <div className="pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row md:items-center md:justify-center">
             {/* Logo */}
             {logo && (
@@ -64,7 +64,7 @@ export default function Footer() {
                   className="h-8 w-auto mr-3"
                 />
                 {logo.alt && (
-                  <span className="font-semibold text-slate-100">
+                  <span className="font-semibold text-foreground">
                     {logo.alt}
                   </span>
                 )}
@@ -73,7 +73,7 @@ export default function Footer() {
 
             {/* Copyright */}
             {copyright && (
-              <div className="text-sm text-slate-300">
+              <div className="text-sm text-muted-foreground">
                 <div dangerouslySetInnerHTML={{ __html: copyright }} />
               </div>
             )}

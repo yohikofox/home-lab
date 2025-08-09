@@ -87,7 +87,7 @@
 
 /* Blocs de code */
 .markdown pre {
-  @apply bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto my-4;
+  @apply bg-code-bg text-code-text p-4 rounded-lg overflow-x-auto my-4;
 }
 
 .markdown pre code {

@@ -20,7 +20,7 @@ function HeroSection() {
   const { siteConfig } = useDocusaurusContext();
 
   return (
-    <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-20 md:py-32">
+    <section className="relative bg-gradient-to-br from-hero-from via-hero-via to-hero-to text-foreground py-20 md:py-32">
       <div
         className="absolute inset-0 opacity-50"
         style={{
@@ -31,23 +31,23 @@ function HeroSection() {
       <div className="relative mx-auto max-w-7xl px-4">
         <div className="text-center">
           {/* Badge */}
-          <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 mb-8">
+          <div className="inline-flex items-center rounded-full border border-border bg-muted/50 px-4 py-2 text-sm font-medium text-muted-foreground mb-8">
             <Zap className="mr-2 h-4 w-4" />
             Infrastructure as Code & Automation
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent mb-6">
             {siteConfig.title}
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
             {siteConfig.tagline}
           </p>
 
           {/* Description */}
-          <p className="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
             Une documentation complète pour construire et maintenir un home lab
             moderne avec des technologies cloud-native, de l'automatisation et
             des meilleures pratiques DevOps.
@@ -71,7 +71,7 @@ function HeroSection() {
               asChild
               variant="outline"
               size="lg"
-              className="border-slate-600 text-slate-500 hover:bg-slate-800 hover:text-slate-300"
+              className="border-border text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <Link to="/docs/INSTALLATION">
                 <Play className="mr-2 h-5 w-5" />

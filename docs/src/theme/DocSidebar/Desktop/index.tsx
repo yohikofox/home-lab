@@ -27,7 +27,7 @@ export default function DocSidebarDesktop({
   }
 
   return (
-    <aside className="w-64 h-[calc(100vh-4rem)] bg-card border-r border-border sticky top-16">
+    <aside className="w-64 min-h-full bg-card border-r border-border flex flex-col">
       <div className="p-4">
         <h2 className="font-semibold text-foreground mb-4">
           {translate({
@@ -38,7 +38,7 @@ export default function DocSidebarDesktop({
         </h2>
       </div>
 
-      <ScrollArea className="h-[calc(100vh-8rem)]">
+      <ScrollArea className="flex-1">
         <nav className="px-4 pb-4">
           <div className="space-y-1">
             {sidebar.map((item, index) => (

@@ -51,6 +51,15 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        hero: {
+          from: "hsl(var(--hero-from))",
+          via: "hsl(var(--hero-via))",
+          to: "hsl(var(--hero-to))",
+        },
+        code: {
+          bg: "hsl(var(--code-bg))",
+          text: "hsl(var(--code-text))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
