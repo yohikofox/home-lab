@@ -63,7 +63,7 @@ const config: Config = {
           onUntruncatedBlogPosts: 'warn',
         },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: './src/css/globals.css',
         },
       } satisfies Preset.Options,
     ],
@@ -73,6 +73,7 @@ const config: Config = {
   
   plugins: [
     './plugins/tailwind-plugin.ts',
+    './plugins/alias-plugin.ts',
   ],
   
   markdown: {

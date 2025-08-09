@@ -1,8 +1,8 @@
-import React, {type ReactNode} from 'react';
-import {useWindowSize} from '@docusaurus/theme-common';
-import DocSidebarDesktop from '@theme/DocSidebar/Desktop';
-import DocSidebarMobile from '@theme/DocSidebar/Mobile';
-import type {Props} from '@theme/DocSidebar';
+import React, { type ReactNode } from "react";
+import { useWindowSize } from "@docusaurus/theme-common";
+import DocSidebarDesktop from "@theme/DocSidebar/Desktop";
+import DocSidebarMobile from "@theme/DocSidebar/Mobile";
+import type { Props } from "@theme/DocSidebar";
 
 // 🎯 DocSidebar minimal mais compatible Docusaurus
 export default function DocSidebar(props: Props): ReactNode {
@@ -10,15 +10,15 @@ export default function DocSidebar(props: Props): ReactNode {
 
   // Desktop sidebar visible on hydration: need SSR rendering
   const shouldRenderSidebarDesktop =
-    windowSize === 'desktop' || windowSize === 'ssr';
+    windowSize === "desktop" || windowSize === "ssr";
 
   // Mobile sidebar not visible on hydration: can avoid SSR rendering
-  const shouldRenderSidebarMobile = windowSize === 'mobile';
+  const shouldRenderSidebarMobile = windowSize === "mobile";
 
   return (
     <>
-      {shouldRenderSidebarDesktop && <DocSidebarDesktop {...props} />}
-      {shouldRenderSidebarMobile && <DocSidebarMobile {...props} />}
+      {/* {shouldRenderSidebarDesktop && <DocSidebarDesktop {...props} />}
+      {shouldRenderSidebarMobile && <DocSidebarMobile {...props} />} */}
     </>
   );
 }
