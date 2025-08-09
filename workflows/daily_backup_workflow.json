@@ -1,0 +1,185 @@
+{
+  "name": "Vaultwarden Daily Backup",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "value": "0 2 * * *"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Schedule Daily Backup",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "command": "/scripts/backup/vaultwarden_backup.sh daily"
+      },
+      "id": "2",
+      "name": "Execute Backup Script",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{JSON.parse($node[\"Execute Backup Script\"].json.stdout).success}}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Check Backup Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "upload",
+        "fileId": {
+          "__rl": true,
+          "value": "={{JSON.parse($node[\"Execute Backup Script\"].json.stdout).sqlite_file}}",
+          "mode": "name"
+        },
+        "name": "Vaultwarden_Backup_{{DateTime.now().toFormat('yyyy-MM-dd')}}.sqlite3",
+        "parents": {
+          "__rl": true,
+          "value": "1234567890abcdef",
+          "mode": "list",
+          "cachedResultName": "Vaultwarden Backups"
+        }
+      },
+      "id": "4",
+      "name": "Upload to Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [880, 200]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "✅ Sauvegarde Vaultwarden réussie\n\n📅 Date: {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n💾 Taille SQLite: {{JSON.parse($node[\"Execute Backup Script\"].json.stdout).sqlite_size}}\n📦 Taille complète: {{JSON.parse($node[\"Execute Backup Script\"].json.stdout).full_size}}\n☁️ Uploadé sur Google Drive"
+      },
+      "id": "5",
+      "name": "Send Success Notification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1100, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "❌ Échec de la sauvegarde Vaultwarden\n\n📅 Date: {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n🚨 Erreur: {{$node[\"Execute Backup Script\"].json.stderr}}\n\n⚠️ Vérifiez les logs et l'état du service"
+      },
+      "id": "6",
+      "name": "Send Failure Notification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [880, 400],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "find /backups/vaultwarden/daily -name '*.sqlite3' -mtime +{{$env.BACKUP_RETENTION_DAYS}} -delete && find /backups/vaultwarden/daily -name '*.tar.gz' -mtime +{{$env.BACKUP_RETENTION_DAYS}} -delete"
+      },
+      "id": "7",
+      "name": "Cleanup Old Backups",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1100, 300]
+    }
+  ],
+  "connections": {
+    "Schedule Daily Backup": {
+      "main": [
+        [
+          {
+            "node": "Execute Backup Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Backup Script": {
+      "main": [
+        [
+          {
+            "node": "Check Backup Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Backup Success": {
+      "main": [
+        [
+          {
+            "node": "Upload to Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Failure Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Send Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Success Notification": {
+      "main": [
+        [
+          {
+            "node": "Cleanup Old Backups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "timezone": "Europe/Paris"
+  },
+  "versionId": "1"
+}

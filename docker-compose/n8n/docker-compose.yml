@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    environment:
+      - DB_TYPE=sqlite
+      - DB_SQLITE_DATABASE=/home/node/.n8n/database.sqlite
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD}
+      - WEBHOOK_URL=https://n8n.yolo.yt
+      - GENERIC_TIMEZONE=Europe/Paris
+      - N8N_SECURE_COOKIE=false
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - vaultwarden_data:/vaultwarden_data:ro
+      - ./backups:/backups
+      - ../scripts:/scripts:ro
+    networks:
+      - n8n_network
+      - vaultwarden_network
+    depends_on:
+      - n8n-redis
+    user: "0:0"  # Root pour accès Docker socket
+
+  n8n-redis:
+    image: redis:7-alpine
+    container_name: n8n-redis
+    restart: unless-stopped
+    volumes:
+      - n8n_redis_data:/data
+    networks:
+      - n8n_network
+    command: redis-server --appendonly yes
+
+volumes:
+  n8n_data:
+    driver: local
+  n8n_redis_data:
+    driver: local
+  vaultwarden_data:
+    external: true
+
+networks:
+  n8n_network:
+    driver: bridge
+  vaultwarden_network:
+    external: true
+    name: vaultwarden_default

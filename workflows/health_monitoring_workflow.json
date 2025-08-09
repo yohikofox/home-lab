@@ -1,0 +1,297 @@
+{
+  "name": "Vaultwarden Health Monitoring",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "value": "*/15 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Schedule Health Check",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "command": "/scripts/monitoring/health_check.sh"
+      },
+      "id": "2",
+      "name": "Execute Health Check",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{JSON.parse($node[\"Execute Health Check\"].json.stdout).status}}",
+              "value2": "healthy"
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Check Health Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{JSON.parse($node[\"Execute Health Check\"].json.stdout).status}}",
+              "value2": "down"
+            }
+          ]
+        }
+      },
+      "id": "4",
+      "name": "Is Service Down",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [880, 400]
+    },
+    {
+      "parameters": {
+        "command": "docker restart vaultwarden"
+      },
+      "id": "5",
+      "name": "Restart Container",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1100, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "🚨 ALERTE CRITIQUE - Vaultwarden DOWN\n\n📅 {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n🔄 Tentative de redémarrage automatique en cours...\n\n⚠️ Vérifiez immédiatement le service!"
+      },
+      "id": "6",
+      "name": "Send Critical Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1100, 500],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "⚠️ Vaultwarden - Problème détecté\n\n📅 {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n🔍 Status: {{JSON.parse($node[\"Execute Health Check\"].json.stdout).status}}\n💬 {{JSON.parse($node[\"Execute Health Check\"].json.stdout).message}}\n\n✅ Container: {{JSON.parse($node[\"Execute Health Check\"].json.stdout).checks.container}}\n🌐 HTTP: {{JSON.parse($node[\"Execute Health Check\"].json.stdout).checks.http}}"
+      },
+      "id": "7",
+      "name": "Send Warning Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [880, 600],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "id": "8",
+      "name": "Wait Before Recheck",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [1320, 300]
+    },
+    {
+      "parameters": {
+        "command": "/scripts/monitoring/health_check.sh"
+      },
+      "id": "9",
+      "name": "Recheck After Restart",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1540, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{JSON.parse($node[\"Recheck After Restart\"].json.stdout).status}}",
+              "value2": "healthy"
+            }
+          ]
+        }
+      },
+      "id": "10",
+      "name": "Check Recovery",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1760, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "✅ Vaultwarden RÉCUPÉRÉ\n\n📅 {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n🔄 Redémarrage automatique réussi\n✅ Service opérationnel"
+      },
+      "id": "11",
+      "name": "Send Recovery Notification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1980, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "🚨 ÉCHEC RÉCUPÉRATION - Vaultwarden\n\n📅 {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n❌ Redémarrage automatique échoué\n\n🆘 INTERVENTION MANUELLE REQUISE!"
+      },
+      "id": "12",
+      "name": "Send Recovery Failure",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1980, 400],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Health Check": {
+      "main": [
+        [
+          {
+            "node": "Execute Health Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Health Check": {
+      "main": [
+        [
+          {
+            "node": "Check Health Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Health Status": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Is Service Down",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Service Down": {
+      "main": [
+        [
+          {
+            "node": "Restart Container",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Critical Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Warning Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restart Container": {
+      "main": [
+        [
+          {
+            "node": "Wait Before Recheck",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait Before Recheck": {
+      "main": [
+        [
+          {
+            "node": "Recheck After Restart",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recheck After Restart": {
+      "main": [
+        [
+          {
+            "node": "Check Recovery",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Recovery": {
+      "main": [
+        [
+          {
+            "node": "Send Recovery Notification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Recovery Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "timezone": "Europe/Paris"
+  },
+  "versionId": "1"
+}

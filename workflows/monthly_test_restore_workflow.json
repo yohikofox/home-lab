@@ -1,0 +1,313 @@
+{
+  "name": "Monthly Backup Test & Restore",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "value": "0 3 1 * *"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Schedule Monthly Test",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "command": "find /backups/vaultwarden/daily -name '*.sqlite3' -type f | sort -r | head -1"
+      },
+      "id": "2",
+      "name": "Find Latest Backup",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Find Latest Backup\"].json.stdout.trim()}}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Check Backup Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "dockerImage": "vaultwarden/server:latest",
+        "command": "sh",
+        "arguments": "-c",
+        "options": {
+          "volumes": [
+            {
+              "hostPath": "={{$node[\"Find Latest Backup\"].json.stdout.trim()}}",
+              "containerPath": "/test_backup.sqlite3",
+              "readonly": true
+            }
+          ],
+          "workdir": "/",
+          "remove": true,
+          "name": "vaultwarden-test-{{DateTime.now().toFormat('yyyyMMdd')}}"
+        }
+      },
+      "id": "4",
+      "name": "Create Test Container",
+      "type": "n8n-nodes-base.docker",
+      "typeVersion": 1,
+      "position": [880, 200]
+    },
+    {
+      "parameters": {
+        "command": "sqlite3 /test_backup.sqlite3 '.schema' | head -20"
+      },
+      "id": "5",
+      "name": "Test Backup Integrity",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1100, 200]
+    },
+    {
+      "parameters": {
+        "command": "sqlite3 /test_backup.sqlite3 'SELECT COUNT(*) as user_count FROM users;'"
+      },
+      "id": "6",
+      "name": "Count Users in Backup",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1320, 200]
+    },
+    {
+      "parameters": {
+        "command": "sqlite3 /test_backup.sqlite3 'SELECT COUNT(*) as cipher_count FROM ciphers;'"
+      },
+      "id": "7",
+      "name": "Count Ciphers in Backup",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1540, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{parseInt($node[\"Count Users in Backup\"].json.stdout.trim())}}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "id": "8",
+      "name": "Validate Data Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1760, 200]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "✅ TEST RESTAURATION RÉUSSI\n\n📅 Date: {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n📄 Backup testé: {{$node[\"Find Latest Backup\"].json.stdout.split('/').pop()}}\n👥 Utilisateurs: {{$node[\"Count Users in Backup\"].json.stdout.trim()}}\n🔐 Coffres: {{$node[\"Count Ciphers in Backup\"].json.stdout.trim()}}\n\n✅ L'intégrité de la sauvegarde est confirmée"
+      },
+      "id": "9",
+      "name": "Send Success Report",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1980, 100],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "❌ ÉCHEC TEST RESTAURATION\n\n📅 Date: {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n📄 Backup: {{$node[\"Find Latest Backup\"].json.stdout.split('/').pop()}}\n🚨 Problème: Aucune donnée utilisateur trouvée\n\n⚠️ Vérifiez l'intégrité des sauvegardes!"
+      },
+      "id": "10",
+      "name": "Send Failure Report",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1980, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "❌ AUCUNE SAUVEGARDE TROUVÉE\n\n📅 Date: {{DateTime.now().toFormat('yyyy-MM-dd HH:mm')}}\n🚨 Aucun fichier de sauvegarde disponible pour le test\n\n⚠️ Vérifiez le processus de sauvegarde!"
+      },
+      "id": "11",
+      "name": "Send No Backup Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [880, 400],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "docker rm -f vaultwarden-test-{{DateTime.now().toFormat('yyyyMMdd')}} 2>/dev/null || true"
+      },
+      "id": "12",
+      "name": "Cleanup Test Container",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [2200, 200]
+    }
+  ],
+  "connections": {
+    "Schedule Monthly Test": {
+      "main": [
+        [
+          {
+            "node": "Find Latest Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Latest Backup": {
+      "main": [
+        [
+          {
+            "node": "Check Backup Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Backup Exists": {
+      "main": [
+        [
+          {
+            "node": "Create Test Container",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send No Backup Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Test Container": {
+      "main": [
+        [
+          {
+            "node": "Test Backup Integrity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test Backup Integrity": {
+      "main": [
+        [
+          {
+            "node": "Count Users in Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Count Users in Backup": {
+      "main": [
+        [
+          {
+            "node": "Count Ciphers in Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Count Ciphers in Backup": {
+      "main": [
+        [
+          {
+            "node": "Validate Data Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Data Exists": {
+      "main": [
+        [
+          {
+            "node": "Send Success Report",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Failure Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Success Report": {
+      "main": [
+        [
+          {
+            "node": "Cleanup Test Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Failure Report": {
+      "main": [
+        [
+          {
+            "node": "Cleanup Test Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "timezone": "Europe/Paris"
+  },
+  "versionId": "1"
+}
