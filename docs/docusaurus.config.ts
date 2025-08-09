@@ -116,46 +116,54 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Documentation',
           items: [
             {
-              label: 'Tutorial',
+              label: 'Introduction',
               to: '/docs/intro',
             },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Architecture',
+              to: '/docs/ARCHITECTURE',
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
+              label: 'Installation',
+              to: '/docs/INSTALLATION',
             },
           ],
         },
         {
-          title: 'More',
+          title: 'Infrastructure',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              label: 'Services Docker',
+              to: '/docs/services',
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              label: 'Réseau & Sécurité',
+              to: '/docs/network',
+            },
+            {
+              label: 'Monitoring',
+              to: '/docs/monitoring',
+            },
+          ],
+        },
+        {
+          title: 'Ressources',
+          items: [
+            {
+              label: 'GitHub Repository',
+              href: 'https://github.com/homelab-user/home-lab',
+            },
+            {
+              label: 'Issues & Support',
+              href: 'https://github.com/homelab-user/home-lab/issues',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Home Lab Project. Infrastructure as Code & Automation.`,
     },
     prism: {
       theme: prismThemes.github,

@@ -3,28 +3,31 @@ import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import { Button } from "@/components/ui/button";
-import { 
-  Server, 
-  Network, 
-  Shield, 
-  Zap, 
-  Code2, 
+import {
+  Server,
+  Network,
+  Shield,
+  Zap,
+  Code2,
   BookOpen,
   ArrowRight,
   Github,
-  Play
+  Play,
 } from "lucide-react";
 
 // 🎯 Hero Zone avec présentation du projet
 function HeroSection() {
   const { siteConfig } = useDocusaurusContext();
-  
+
   return (
     <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-20 md:py-32">
-      <div className="absolute inset-0 opacity-50" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-      }}></div>
-      
+      <div
+        className="absolute inset-0 opacity-50"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      ></div>
+
       <div className="relative mx-auto max-w-7xl px-4">
         <div className="text-center">
           {/* Badge */}
@@ -45,21 +48,31 @@ function HeroSection() {
 
           {/* Description */}
           <p className="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">
-            Une documentation complète pour construire et maintenir un home lab moderne 
-            avec des technologies cloud-native, de l'automatisation et des meilleures pratiques DevOps.
+            Une documentation complète pour construire et maintenir un home lab
+            moderne avec des technologies cloud-native, de l'automatisation et
+            des meilleures pratiques DevOps.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button
+              asChild
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
               <Link to="/docs/intro">
                 <BookOpen className="mr-2 h-5 w-5" />
                 Commencer la documentation
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            
-            <Button asChild variant="outline" size="lg" className="border-slate-600 text-slate-500 hover:bg-slate-800 hover:text-slate-300">
+
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-slate-600 text-slate-500 hover:bg-slate-800 hover:text-slate-300"
+            >
               <Link to="/docs/INSTALLATION">
                 <Play className="mr-2 h-5 w-5" />
                 Guide d'installation
@@ -78,23 +91,27 @@ function FeaturesSection() {
     {
       icon: <Server className="h-8 w-8 text-blue-500" />,
       title: "Infrastructure Moderne",
-      description: "Docker, Kubernetes, et orchestration de services avec les dernières technologies cloud-native."
+      description:
+        "Docker, Kubernetes, et orchestration de services avec les dernières technologies cloud-native.",
     },
     {
       icon: <Network className="h-8 w-8 text-green-500" />,
-      title: "Réseau Sécurisé", 
-      description: "Topologie réseau avancée avec VLANs, firewalls, et segmentation pour un environnement sécurisé."
+      title: "Réseau Sécurisé",
+      description:
+        "Topologie réseau avancée avec VLANs, firewalls, et segmentation pour un environnement sécurisé.",
     },
     {
       icon: <Code2 className="h-8 w-8 text-purple-500" />,
       title: "Infrastructure as Code",
-      description: "Terraform, Ansible et GitOps pour une infrastructure reproductible et versionée."
+      description:
+        "Terraform, Ansible et GitOps pour une infrastructure reproductible et versionée.",
     },
     {
       icon: <Shield className="h-8 w-8 text-red-500" />,
       title: "Sécurité Intégrée",
-      description: "Bonnes pratiques de sécurité, monitoring, et compliance pour un environnement robuste."
-    }
+      description:
+        "Bonnes pratiques de sécurité, monitoring, et compliance pour un environnement robuste.",
+    },
   ];
 
   return (
@@ -106,26 +123,25 @@ function FeaturesSection() {
             Pourquoi ce Home Lab ?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Une approche méthodique pour construire un laboratoire personnel 
-            qui reflète les standards de production modernes.
+            Une approche méthodique pour construire un laboratoire personnel qui
+            reflète les standards de production modernes.
           </p>
         </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {features.map((feature, index) => (
-            <div key={index} className="border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <div
+              key={index}
+              className="border border-border rounded-lg p-6 hover:shadow-lg transition-shadow"
+            >
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  {feature.icon}
-                </div>
+                <div className="flex-shrink-0">{feature.icon}</div>
                 <div>
                   <h3 className="text-xl font-semibold text-foreground mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-muted-foreground">
-                    {feature.description}
-                  </p>
+                  <p className="text-muted-foreground">{feature.description}</p>
                 </div>
               </div>
             </div>
@@ -138,10 +154,10 @@ function FeaturesSection() {
             Architecture Complète
           </h3>
           <p className="text-muted-foreground mb-8 max-w-3xl mx-auto">
-            De la planification réseau au déploiement d'applications, 
-            découvrez une architecture pensée pour l'évolutivité et la maintenabilité.
+            De la planification réseau au déploiement d'applications, découvrez
+            une architecture pensée pour l'évolutivité et la maintenabilité.
           </p>
-          
+
           <Button asChild variant="outline" size="lg">
             <Link to="/docs/ARCHITECTURE">
               Voir l'architecture

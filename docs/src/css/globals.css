@@ -5,6 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import des styles Markdown personnalisés */
+@import './markdown.css';
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
