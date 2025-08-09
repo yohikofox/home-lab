@@ -128,16 +128,16 @@ const config: Config = {
           title: 'Infrastructure',
           items: [
             {
-              label: 'Services Docker',
-              to: '/docs/services',
+              label: 'Services',
+              to: '/docs/SERVICES',
             },
             {
-              label: 'Réseau & Sécurité',
-              to: '/docs/network',
+              label: 'Réseau',
+              to: '/docs/NETWORK',
             },
             {
-              label: 'Monitoring',
-              to: '/docs/monitoring',
+              label: 'Workflows',
+              to: '/docs/WORKFLOWS',
             },
           ],
         },
