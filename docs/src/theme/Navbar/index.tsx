@@ -76,7 +76,7 @@ export default function Navbar() {
   const rightItems = items.filter((item) => item.position === "right");
   const logoUrl = useBaseUrl(logo?.src || "");
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <header className="navbar bg-background border-b border-border sticky top-0 z-50">
