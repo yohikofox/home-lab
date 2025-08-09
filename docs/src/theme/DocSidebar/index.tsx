@@ -17,8 +17,8 @@ export default function DocSidebar(props: Props): ReactNode {
 
   return (
     <>
-      {/* {shouldRenderSidebarDesktop && <DocSidebarDesktop {...props} />}
-      {shouldRenderSidebarMobile && <DocSidebarMobile {...props} />} */}
+      {shouldRenderSidebarDesktop && <DocSidebarDesktop {...props} />}
+      {shouldRenderSidebarMobile && <DocSidebarMobile {...props} />}
     </>
   );
 }
