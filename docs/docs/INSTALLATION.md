@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Installation N8N pour Disaster Recovery Vaultwarden
 
 ## Vue d'ensemble

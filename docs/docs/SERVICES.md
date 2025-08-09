@@ -1,3 +1,7 @@
+---
+sidebar_position: 7
+---
+
 # Inventaire des Services - Home Lab Yohikofox
 
 ## PC Lenovo - Stack Docker

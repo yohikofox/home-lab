@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  docs:
+    build:
+      context: ../../docs
+      dockerfile: Dockerfile
+    container_name: home-lab-docs
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      - docs_network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      - "traefik.enable=false"  # Disable Traefik if present
+      - "com.docker.compose.project=home-lab-docs"
+
+  # Development service (optional - for live editing)
+  docs-dev:
+    image: node:18-alpine
+    container_name: home-lab-docs-dev
+    working_dir: /app
+    command: npm start -- --host 0.0.0.0 --port 3001
+    ports:
+      - "3001:3001"
+    volumes:
+      - ../../docs:/app
+      - /app/node_modules  # Anonymous volume to prevent node_modules conflicts
+    networks:
+      - docs_network
+    environment:
+      - NODE_ENV=development
+    profiles:
+      - dev
+    stdin_open: true
+    tty: true
+
+networks:
+  docs_network:
+    driver: bridge
+    name: home-lab-docs

@@ -39,19 +39,25 @@ home-lab/
 
 ## Installation rapide
 
+### Installation en une commande 🚀
 ```bash
-# Cloner le projet
-git clone https://github.com/Yohikofox/home-lab.git
-cd home-lab
-
-# Installation automatique N8N
-./scripts/install_n8n.sh
-
-# Configuration post-installation
-nano docker-compose/n8n/.env
+curl -sSL https://raw.githubusercontent.com/yohikofox/home-lab/main/install.sh | bash
 ```
 
+### Installation locale
+```bash
+git clone https://github.com/Yohikofox/home-lab.git
+cd home-lab
+./install.sh
+```
+
+**Systèmes supportés** : Linux (Ubuntu, Debian, CentOS, Fedora, Arch), macOS (Intel/M1/M2)
+
 ## Documentation
+
+### Installation
+- [⚡ Installation rapide](docs/QUICK_INSTALL.md) - Installation en une commande
+- [📋 Guide détaillé](docs/INSTALLATION.md) - Installation manuelle étape par étape
 
 ### Architecture et Infrastructure
 - [🏗️ Architecture générale](docs/ARCHITECTURE.md) - Vue d'ensemble du home lab
@@ -59,7 +65,6 @@ nano docker-compose/n8n/.env
 - [🌐 Architecture réseau](docs/NETWORK.md) - Topologie, DNS, sécurité réseau
 
 ### Projets spécifiques
-- [📋 Guide d'installation N8N](docs/INSTALLATION.md) - Installation complète étape par étape
 - [⚙️ Documentation workflows](docs/WORKFLOWS.md) - Détails techniques des automatisations
 - [🎯 Contexte projet](CLAUDE.md) - Spécifications et objectifs détaillés
 

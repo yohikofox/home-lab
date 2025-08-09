@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Architecture du Home Lab Yohikofox
 
 ## Vue d'ensemble

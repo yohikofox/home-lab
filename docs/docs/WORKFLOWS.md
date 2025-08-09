@@ -1,3 +1,7 @@
+---
+sidebar_position: 8
+---
+
 # Documentation des Workflows N8N
 
 ## Vue d'ensemble
