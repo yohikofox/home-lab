@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Home Lab Yohikofox',
+  title: 'Home Lab Documentation',
   tagline: 'Infrastructure as Code et automatisations pour home lab personnel',
   favicon: 'img/favicon.ico',
 
@@ -15,14 +15,14 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://docs.yolo.yt',
+  url: 'https://docs.example.local',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'yohikofox', // Usually your GitHub org/user name.
+  organizationName: 'homelab-user', // Usually your GitHub org/user name.
   projectName: 'home-lab', // Usually your repo name.
 
   onBrokenLinks: 'throw',
@@ -45,7 +45,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/yohikofox/home-lab/tree/main/docs/',
+            'https://github.com/homelab-user/home-lab/tree/main/docs/',
         },
         blog: {
           showReadingTime: true,
@@ -68,6 +68,12 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+
+  themes: ['@docusaurus/theme-mermaid'],
+  
+  markdown: {
+    mermaid: true,
+  },
 
   themeConfig: {
     // Replace with your project's social card

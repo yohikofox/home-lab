@@ -10,39 +10,45 @@ Le home lab Yohikofox est structuré autour de 4 composants principaux répartis
 
 ## Schéma d'architecture
 
-```
-Internet
-    ↓
-┌─────────────────────────────────────┐
-│     Routeur Netgear R7100LG         │
-│  - Point d'entrée réseau            │
-│  - Routage & NAT                    │  
-│  - WiFi domestique                  │
-└─────────────┬───────────────────────┘
-              │
-        Réseau local
-              │
-    ┌─────────┴─────────┐
-    ↓                   ↓
-┌──────────┐    ┌─────────────────────┐
-│ RPI 4    │    │    PC Lenovo        │
-│ 8GB RAM  │    │    16GB RAM         │
-│          │    │    4 vCPU           │
-│ DOMOTIQUE│    │    SERVICES DOCKER  │
-└──────────┘    └─────────────────────┘
-    │                   │
-    │           ┌───────┴───────┐
-    │           ↓               ↓
-    │    ┌─────────────┐ ┌─────────────┐
-    │    │ Gestion &   │ │ Services    │
-    │    │ Monitoring  │ │ Applicatifs │
-    │    └─────────────┘ └─────────────┘
-    │
-┌───┴─────────────┐
-│  Périphériques  │
-│  Zigbee/Z-Wave  │
-│  Caméras        │
-└─────────────────┘
+```mermaid
+graph TB
+    Internet["🌐 Internet"]
+    Router["📡 Routeur Netgear R7100LG<br/>• Point d'entrée réseau<br/>• Routage & NAT<br/>• WiFi domestique"]
+    
+    subgraph HomeNetwork["🏠 Réseau Local"]
+        RPI["🍓 RPI 4 - 8GB RAM<br/>🏠 DOMOTIQUE"]
+        Lenovo["💻 PC Lenovo - 16GB RAM, 4 vCPU<br/>🐳 SERVICES DOCKER"]
+        
+        subgraph DockerServices["Services Docker"]
+            Management["⚙️ Gestion & Monitoring<br/>• Portainer<br/>• Netdata"]
+            Apps["🛠️ Services Applicatifs<br/>• Vaultwarden<br/>• Zitadel<br/>• Snipe-IT"]
+        end
+        
+        subgraph IoTDevices["🏠 Périphériques IoT"]
+            Zigbee["📡 Zigbee/Z-Wave"]
+            Cameras["📹 Caméras"]
+        end
+    end
+    
+    Internet --> Router
+    Router --> RPI
+    Router --> Lenovo
+    Lenovo --> Management
+    Lenovo --> Apps
+    RPI --> IoTDevices
+    IoTDevices --> Zigbee
+    IoTDevices --> Cameras
+    
+    classDef internet fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    classDef router fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    classDef homeAssistant fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000
+    classDef docker fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    classDef iot fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
+    
+    class Internet internet
+    class Router router
+    class RPI,IoTDevices,Zigbee,Cameras homeAssistant
+    class Lenovo,DockerServices,Management,Apps docker
 ```
 
 ## Infrastructure matérielle
@@ -130,16 +136,27 @@ Internet
 
 ### Segmentation logique
 
-```
-Internet ← NAT ← [Routeur] ← Réseau Local (192.168.1.0/24)
-                     │
-            ┌────────┼────────┐
-            │                 │
-    ┌───────▼─────────┐ ┌────▼──────────────────┐
-    │ RPI Domotique   │ │ PC Lenovo Services    │
-    │ 192.168.1.100   │ │ 192.168.1.101         │
-    │ Port: 8123      │ │ Ports: 80,443,9000... │
-    └─────────────────┘ └───────────────────────┘
+```mermaid
+graph LR
+    Internet["🌐 Internet"]
+    Router["📡 Routeur<br/>NAT"]
+    Network["🏠 Réseau Local<br/>192.168.1.0/24"]
+    
+    subgraph Devices["Périphériques"]
+        RPI["🍓 RPI Domotique<br/>📍 192.168.1.100<br/>🔌 Port: 8123"]
+        Lenovo["💻 PC Lenovo Services<br/>📍 192.168.1.101<br/>🔌 Ports: 80,443,9000..."]
+    end
+    
+    Internet --> Router
+    Router --> Network
+    Network --> RPI
+    Network --> Lenovo
+    
+    classDef network fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    classDef device fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    
+    class Network network
+    class RPI,Lenovo device
 ```
 
 ### Flux de données principaux

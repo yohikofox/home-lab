@@ -74,19 +74,39 @@ start_documentation() {
 
 ## Structure de la documentation
 
-```
-docs/
-├── docs/                    # Documentation principale
-│   ├── intro.md            # Page d'accueil
-│   ├── ARCHITECTURE.md     # Architecture du home lab
-│   ├── SERVICES.md         # Services déployés
-│   ├── NETWORK.md          # Configuration réseau
-│   ├── WORKFLOWS.md        # Workflows N8N
-│   ├── INSTALLATION.md     # Guide d'installation
-│   └── QUICK_INSTALL.md    # Installation rapide
-├── blog/                   # Blog (changelog, mises à jour)
-├── static/                 # Assets statiques
-└── docusaurus.config.ts    # Configuration Docusaurus
+```mermaid
+graph TB
+    subgraph DocusaurusProject["📁 docs/"]
+        subgraph MainDocs["📁 docs/ - Documentation principale"]
+            Intro["📄 intro.md<br/>Page d'accueil"]
+            Architecture["🏗️ ARCHITECTURE.md<br/>Architecture du home lab"]
+            Services["🛠️ SERVICES.md<br/>Services déployés"]
+            Network["🌐 NETWORK.md<br/>Configuration réseau"]
+            Workflows["⚡ WORKFLOWS.md<br/>Workflows N8N"]
+            Installation["📦 INSTALLATION.md<br/>Guide d'installation"]
+            QuickInstall["🚀 QUICK_INSTALL.md<br/>Installation rapide"]
+            NetworkTopology["🗺️ architecture/network-topology.md<br/>Diagrammes réseau"]
+        end
+        
+        subgraph Blog["📁 blog/"]
+            BlogContent["📝 Blog<br/>Changelog, mises à jour"]
+        end
+        
+        subgraph Static["📁 static/"]
+            Assets["🖼️ Assets statiques<br/>Images, CSS, JS"]
+        end
+        
+        Config["⚙️ docusaurus.config.ts<br/>Configuration Docusaurus"]
+        Sidebars["🗂️ sidebars.ts<br/>Navigation"]
+    end
+    
+    classDef folder fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    classDef file fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000
+    classDef config fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    
+    class MainDocs,Blog,Static folder
+    class Intro,Architecture,Services,Network,Workflows,Installation,QuickInstall,NetworkTopology,BlogContent,Assets file
+    class Config,Sidebars config
 ```
 
 ## Personnalisation

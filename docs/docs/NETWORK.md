@@ -6,49 +6,49 @@ sidebar_position: 5
 
 ## Topologie réseau
 
-```
-                        Internet
-                           │
-                    ┌──────┴───────┐
-                    │              │
-                    │   Routeur    │
-                    │ Netgear      │
-                    │ R7100LG      │
-                    │              │
-                    └──────┬───────┘
-                           │
-                   Réseau Local LAN
-                  (192.168.1.0/24)
-                           │
-        ┌──────────────────┼──────────────────┐
-        │                  │                  │
-    ┌───▼────┐        ┌────▼────┐        ┌────▼────┐
-    │        │        │         │        │         │
-    │ RPI 4  │        │PC Lenovo│        │ Clients │
-    │Domotique│       │Services │        │laptops/ │
-    │        │        │ Docker  │        │ tablets │
-    │.100    │        │  .101   │        │ .10-99  │
-    └────────┘        └─────────┘        └─────────┘
-         │                  │
-    ┌────▼───┐         ┌────▼─────────────────────┐
-    │Zigbee  │         │                          │
-    │Devices │         │    Docker Services       │
-    │        │         │                          │
-    │        │         │ ┌─────────────────────┐  │
-    └────────┘         │ │ Nginx Proxy Manager │  │
-                       │ │    (80/443)         │  │
-                       │ └─────────────────────┘  │
-                       │                          │
-                       │ ┌─────────────────────┐  │
-                       │ │    PiHole DNS       │  │
-                       │ │     (53)            │  │
-                       │ └─────────────────────┘  │
-                       │                          │
-                       │ ┌─────────────────────┐  │
-                       │ │ App Services        │  │
-                       │ │ Vault/Zitadel/etc   │  │
-                       │ └─────────────────────┘  │
-                       └──────────────────────────┘
+```mermaid
+graph TB
+    Internet["🌐 Internet"]
+    Router["📡 Routeur Netgear R7100LG"]
+    LAN["🏠 Réseau Local LAN<br/>(192.168.1.0/24)"]
+    
+    subgraph Devices["Périphériques Réseau"]
+        RPI["🍓 RPI 4<br/>Domotique<br/>📍 .100"]
+        Lenovo["💻 PC Lenovo<br/>Services Docker<br/>📍 .101"]
+        Clients["👥 Clients<br/>laptops/tablets<br/>📍 .10-99"]
+    end
+    
+    subgraph IoTZone["🏠 Zone IoT"]
+        ZigbeeDevices["📡 Zigbee Devices<br/>• Capteurs<br/>• Actionneurs<br/>• Interrupteurs"]
+    end
+    
+    subgraph DockerStack["🐳 Docker Services"]
+        NPM["🔒 Nginx Proxy Manager<br/>Ports: 80/443"]
+        DNS["🚫 PiHole DNS<br/>Port: 53"]
+        Apps["🛠️ App Services<br/>Vault/Zitadel/etc"]
+    end
+    
+    Internet --> Router
+    Router --> LAN
+    LAN --> RPI
+    LAN --> Lenovo
+    LAN --> Clients
+    
+    RPI --> ZigbeeDevices
+    Lenovo --> DockerStack
+    DockerStack --> NPM
+    DockerStack --> DNS
+    DockerStack --> Apps
+    
+    classDef network fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    classDef device fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    classDef iot fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000
+    classDef docker fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    
+    class LAN network
+    class RPI,Lenovo,Clients device
+    class IoTZone,ZigbeeDevices iot
+    class DockerStack,NPM,DNS,Apps docker
 ```
 
 ## Plan d'adressage IP
@@ -97,36 +97,104 @@ sidebar_position: 5
 ## Flux réseau par protocole
 
 ### HTTP/HTTPS (Web)
-```
-Client → Port 80/443 → [NPM] → Backend Service
-│
-├─ vault.yolo.yt → Vaultwarden
-├─ auth.yolo.yt → Zitadel  
-├─ assets.yolo.yt → Snipe-IT
-├─ print.yolo.yt → OctoPrint
-└─ pi.yolo.yt → PiHole Admin
+
+```mermaid
+graph LR
+    Client["👤 Client"]
+    NPM["🔒 Nginx Proxy Manager<br/>Ports 80/443"]
+    
+    subgraph Services["🛠️ Backend Services"]
+        Vault["🔐 Vaultwarden<br/>vault.homelab.local"]
+        Auth["🎫 Zitadel<br/>auth.homelab.local"]
+        Assets["📦 Snipe-IT<br/>assets.homelab.local"]
+        Print["🖨️ OctoPrint<br/>print.homelab.local"]
+        PiAdmin["🚫 PiHole Admin<br/>pi.homelab.local"]
+    end
+    
+    Client --> NPM
+    NPM --> Vault
+    NPM --> Auth
+    NPM --> Assets
+    NPM --> Print
+    NPM --> PiAdmin
+    
+    classDef proxy fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000
+    
+    class NPM proxy
+    class Vault,Auth,Assets,Print,PiAdmin service
 ```
 
 ### DNS
-```
-Clients → Port 53 → [PiHole] → Upstream DNS
-│                       │
-│                       ├─ Blocage pub/malware
-│                       └─ Résolution locale
+
+```mermaid
+graph LR
+    Clients["👥 Clients"]
+    PiHole["🚫 PiHole<br/>Port 53"]
+    Upstream["🌐 Upstream DNS<br/>1.1.1.1"]
+    
+    subgraph Features["Fonctionnalités"]
+        Block["🚫 Blocage pub/malware"]
+        Local["🏠 Résolution locale"]
+    end
+    
+    Clients --> PiHole
+    PiHole --> Features
+    PiHole --> Upstream
+    Features --> Block
+    Features --> Local
+    
+    classDef dns fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    classDef feature fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
+    
+    class PiHole dns
+    class Block,Local feature
 ```
 
 ### IoT/Domotique
-```
-Périphériques Zigbee ↔ [Coordinateur USB] ↔ Zigbee2MQTT ↔ MQTT ↔ Home Assistant
-                                                          ↕
-                                                    Mosquitto Broker
-                                                      (Port 1883)
+
+```mermaid
+graph LR
+    Devices["📡 Périphériques Zigbee<br/>• Capteurs<br/>• Actionneurs<br/>• Interrupteurs"]
+    Coordinator["🔌 Coordinateur USB"]
+    Z2M["📡 Zigbee2MQTT"]
+    MQTT["📨 Mosquitto Broker<br/>Port 1883"]
+    HA["🏠 Home Assistant"]
+    
+    Devices <--> Coordinator
+    Coordinator <--> Z2M
+    Z2M <--> MQTT
+    MQTT <--> HA
+    
+    classDef zigbee fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    classDef mqtt fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    classDef ha fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    
+    class Devices,Coordinator,Z2M zigbee
+    class MQTT mqtt
+    class HA ha
 ```
 
 ### Monitoring
-```
-Système → [Netdata Agent] → Port 19999 → Dashboard Web
-Docker → [Portainer] → Port 9000 → Management Web
+
+```mermaid
+graph TB
+    System["⚙️ Système"]
+    Docker["🐳 Docker"]
+    
+    subgraph Monitoring["📊 Outils de Monitoring"]
+        Netdata["📈 Netdata Agent<br/>Port 19999<br/>Dashboard Web"]
+        Portainer["🐳 Portainer<br/>Port 9000<br/>Management Web"]
+    end
+    
+    System --> Netdata
+    Docker --> Portainer
+    
+    classDef monitor fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000
+    classDef source fill:#f5f5f5,stroke:#616161,stroke-width:2px,color:#000
+    
+    class Netdata,Portainer monitor
+    class System,Docker source
 ```
 
 ## Configuration DNS
@@ -134,13 +202,35 @@ Docker → [Portainer] → Port 9000 → Management Web
 ### PiHole comme DNS primaire
 
 #### Résolution locale
-```
-vault.yolo.yt     → 192.168.1.101
-auth.yolo.yt      → 192.168.1.101  
-assets.yolo.yt    → 192.168.1.101
-print.yolo.yt     → 192.168.1.101
-pi.yolo.yt        → 192.168.1.101
-homeassistant.local → 192.168.1.100
+
+```mermaid
+graph LR
+    subgraph Domains["🌐 Domaines"]
+        VaultDom["🔐 vault.homelab.local"]
+        AuthDom["🎫 auth.homelab.local"]
+        AssetsDom["📦 assets.homelab.local"]
+        PrintDom["🖨️ print.homelab.local"]
+        PiDom["🚫 pi.homelab.local"]
+        HADom["🏠 homeassistant.local"]
+    end
+    
+    subgraph IPs["📍 Adresses IP"]
+        DockerHost["💻 192.168.1.101"]
+        HomeAssistant["🍓 192.168.1.100"]
+    end
+    
+    VaultDom --> DockerHost
+    AuthDom --> DockerHost
+    AssetsDom --> DockerHost
+    PrintDom --> DockerHost
+    PiDom --> DockerHost
+    HADom --> HomeAssistant
+    
+    classDef domain fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    classDef ip fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000
+    
+    class VaultDom,AuthDom,AssetsDom,PrintDom,PiDom,HADom domain
+    class DockerHost,HomeAssistant ip
 ```
 
 #### Upstream DNS

@@ -1,0 +1,124 @@
+# Configuration Home Lab - Template YAML
+# Copiez ce fichier vers config.yml et adaptez les valeurs à votre environnement
+
+# Configuration réseau
+network:
+  domain: "${HOMELAB_DOMAIN:-homelab.local}"
+  dns_server: "${PRIMARY_DNS:-1.1.1.1}"
+  subnet: "${NETWORK_SUBNET:-192.168.1.0/24}"
+
+# Machines du home lab
+machines:
+  docker_host:
+    ip: "${DOCKER_HOST_IP:-192.168.1.101}"
+    hostname: "${DOCKER_HOST_HOSTNAME:-docker-host}"
+    mac: "XX:XX:XX:XX:XX:XX"  # À remplir avec votre MAC
+    user: "${SSH_USER:-homelab}"
+    services: ["portainer", "npm", "pihole", "vaultwarden", "n8n"]
+  
+  homeassistant:
+    ip: "${HOMEASSISTANT_IP:-192.168.1.100}"
+    hostname: "${HOMEASSISTANT_HOSTNAME:-homeassistant-pi}"
+    mac: "XX:XX:XX:XX:XX:XX"  # À remplir avec votre MAC
+    user: "${SSH_USER:-homelab}"
+    services: ["hass", "zigbee2mqtt", "frigate"]
+
+# Configuration routeur
+router:
+  ip: "${ROUTER_IP:-192.168.1.1}"
+  model: "generic_router"  # Remplacez par votre modèle
+  management_interface: "web"
+
+# Configuration des services
+services:
+  # Infrastructure
+  portainer:
+    port: "${PORTAINER_PORT:-9000}"
+    admin_user: "admin"
+    admin_password: "[AUTO_GENERATED]"
+    domain: "${PORTAINER_SUBDOMAIN:-portainer}.${HOMELAB_DOMAIN:-homelab.local}"
+  
+  nginx_proxy:
+    ports: [80, 443, "${NPM_ADMIN_PORT:-81}"]
+    admin_email: "${SSL_EMAIL:-admin@homelab.local}"
+    domain: "${NPM_SUBDOMAIN:-npm}.${HOMELAB_DOMAIN:-homelab.local}"
+    
+  pihole:
+    port: "${PIHOLE_PORT:-53}"
+    admin_password: "[AUTO_GENERATED]"
+    domain: "${PIHOLE_SUBDOMAIN:-pi}.${HOMELAB_DOMAIN:-homelab.local}"
+    upstream_dns: 
+      - "${PRIMARY_DNS:-1.1.1.1}"
+      - "${SECONDARY_DNS:-1.0.0.1}"
+    blocklists:
+      - "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+      - "https://someonewhocares.org/hosts/zero/hosts"
+
+  # Applications
+  vaultwarden:
+    port: 80
+    domain: "${VAULTWARDEN_SUBDOMAIN:-vault}.${HOMELAB_DOMAIN:-homelab.local}"
+    admin_token: "[AUTO_GENERATED]"
+    smtp_host: "${SMTP_HOST:-}"
+    smtp_port: "${SMTP_PORT:-587}"
+    smtp_user: "${SMTP_USER:-}"
+    smtp_password: "${SMTP_PASSWORD:-}"
+
+  zitadel:
+    ports: [8080, 8443]
+    domain: "${ZITADEL_SUBDOMAIN:-auth}.${HOMELAB_DOMAIN:-homelab.local}"
+    database: "postgres"
+
+  snipe_it:
+    port: 80
+    domain: "${SNIPEIT_SUBDOMAIN:-assets}.${HOMELAB_DOMAIN:-homelab.local}"
+    database: "mysql"
+
+  n8n:
+    port: "${N8N_PORT:-5678}"
+    domain: "${N8N_SUBDOMAIN:-n8n}.${HOMELAB_DOMAIN:-homelab.local}"
+    auth_user: "admin"
+    auth_password: "[AUTO_GENERATED]"
+
+  netdata:
+    port: "${NETDATA_PORT:-19999}"
+    domain: "${NETDATA_SUBDOMAIN:-monitoring}.${HOMELAB_DOMAIN:-homelab.local}"
+
+  docusaurus:
+    port: 3000
+    domain: "${DOCS_SUBDOMAIN:-docs}.${HOMELAB_DOMAIN:-homelab.local}"
+
+# Configuration sécurité
+security:
+  ssh_port: 22
+  ssh_key_path: "~/.ssh/homelab_rsa"
+  secrets_storage: "${SECRETS_DIR:-~/.homelab/secrets}"
+  fail2ban_enabled: true
+  ufw_enabled: true
+
+# Configuration stockage
+storage:
+  docker_data_dir: "${DOCKER_DATA_DIR:-/opt/docker-data}"
+  backup_dir: "${BACKUP_DIR:-/opt/backups}"
+  logs_dir: "${LOGS_DIR:-/var/log/homelab}"
+
+# Configuration notifications (optionnel)
+notifications:
+  telegram:
+    bot_token: "${TELEGRAM_BOT_TOKEN:-}"
+    chat_id: "${TELEGRAM_CHAT_ID:-}"
+  email:
+    smtp_host: "${SMTP_HOST:-}"
+    smtp_port: "${SMTP_PORT:-587}"
+    smtp_user: "${SMTP_USER:-}"
+    smtp_password: "${SMTP_PASSWORD:-}"
+    from_address: "${SMTP_USER:-notifications@homelab.local}"
+
+# Configuration backup cloud (optionnel)
+backup:
+  s3:
+    enabled: false
+    bucket: "${S3_BUCKET:-}"
+    region: "${S3_REGION:-eu-west-1}"
+    access_key: "${S3_ACCESS_KEY:-}"
+    secret_key: "${S3_SECRET_KEY:-}"
