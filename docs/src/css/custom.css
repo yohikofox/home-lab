@@ -1,6 +1,6 @@
 /**
  * HomeLab Pro Theme - Modern Documentation Design
- * Version: 1.0.0 
+ * Version: 2.1.0 - FIXED: Dark/Light Mode + Mermaid + Margins
  * Optimized for technical documentation and infrastructure guides
  */
 
@@ -47,12 +47,20 @@
   --ifm-font-size-base: 16px;
   --ifm-line-height-base: 1.6;
   
-  /* === Spacing & Sizing === */
-  --ifm-spacing-horizontal: 1.5rem;
-  --ifm-spacing-vertical: 1.5rem;
+  /* === Spacing & Sizing - FIXED: Better margins === */
+  --ifm-spacing-horizontal: 1rem;
+  --ifm-spacing-vertical: 1rem;
   --ifm-container-width-xl: 1400px;
   --ifm-border-radius: 8px;
   --ifm-border-radius-lg: 12px;
+  --ifm-global-spacing: 1rem;
+  
+  /* === Mermaid Variables - Light Mode === */
+  --mermaid-bg-color: transparent;
+  --mermaid-primary-color: var(--homelab-blue);
+  --mermaid-secondary-color: var(--homelab-surface-glass);
+  --mermaid-text-color: var(--homelab-text-primary);
+  --mermaid-border-color: var(--homelab-cyan);
   
   /* === Shadows === */
   --homelab-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -89,6 +97,19 @@
   
   --ifm-blockquote-border-left-color: var(--homelab-cyan);
   --ifm-hr-background-color: var(--homelab-dark-tertiary);
+  
+  /* === Mermaid Variables - Dark Mode === */
+  --mermaid-bg-color: transparent;
+  --mermaid-primary-color: var(--homelab-cyan);
+  --mermaid-secondary-color: var(--homelab-dark-tertiary);
+  --mermaid-text-color: var(--homelab-text-primary);
+  --mermaid-border-color: var(--homelab-cyan);
+  
+  /* === Additional dark mode fixes === */
+  --ifm-link-color: var(--homelab-cyan);
+  --ifm-link-hover-color: var(--homelab-green);
+  --ifm-menu-color-active: var(--homelab-cyan);
+  --ifm-toc-link-color: var(--homelab-text-secondary);
 }
 
 /* Light theme compatibility */
@@ -100,6 +121,18 @@
   --ifm-color-primary-light: #1a75ff;
   --ifm-color-primary-lighter: #3385ff;
   --ifm-color-primary-lightest: #66a3ff;
+  
+  /* === Light Mode Overrides === */
+  --homelab-text-primary: #1e293b;
+  --homelab-text-secondary: #475569;
+  --homelab-text-tertiary: #64748b;
+  
+  /* === Mermaid Variables - Light Mode Override === */
+  --mermaid-bg-color: rgba(255, 255, 255, 0.9);
+  --mermaid-primary-color: var(--homelab-blue);
+  --mermaid-secondary-color: #f8fafc;
+  --mermaid-text-color: #1e293b;
+  --mermaid-border-color: var(--homelab-blue);
 }
 
 /* ==========================================
@@ -220,9 +253,34 @@ article {
   background: var(--homelab-surface-1);
   border-radius: var(--ifm-border-radius-lg);
   box-shadow: var(--homelab-shadow-md);
-  margin: 2rem 0;
+  margin: var(--ifm-global-spacing) 0;
   backdrop-filter: blur(20px);
   border: 1px solid var(--homelab-surface-glass);
+}
+
+/* Content wrapper improvements for better margins */
+.theme-doc-markdown {
+  padding: 0 var(--ifm-global-spacing);
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--ifm-global-spacing);
+  padding-right: var(--ifm-global-spacing);
+}
+
+/* Better responsive margins */
+@media (min-width: 769px) and (max-width: 1023px) {
+  :root {
+    --ifm-global-spacing: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --ifm-global-spacing: 1.5rem;
+  }
 }
 
 /* ==========================================
@@ -298,17 +356,74 @@ pre code {
 }
 
 /* ==========================================
-   MERMAID DIAGRAMS ENHANCEMENT
+   MERMAID DIAGRAMS ENHANCEMENT - FIXED
    ========================================== */
 
 .mermaid {
-  background: var(--homelab-surface-1) !important;
-  border: 2px solid var(--homelab-surface-glass);
+  background: var(--mermaid-bg-color) !important;
+  border: 1px solid var(--mermaid-border-color);
   border-radius: var(--ifm-border-radius-lg);
-  padding: 1.5rem;
-  margin: 2rem 0;
+  padding: var(--ifm-global-spacing);
+  margin: 1.5rem 0;
   box-shadow: var(--homelab-shadow-md);
   backdrop-filter: blur(10px);
+  overflow-x: auto;
+}
+
+/* CRITICAL: Force text colors for Mermaid elements */
+.mermaid text,
+.mermaid .node text,
+.mermaid .label,
+.mermaid .messageText,
+.mermaid .actor-text,
+.mermaid .flowchart-label {
+  fill: var(--mermaid-text-color) !important;
+  color: var(--mermaid-text-color) !important;
+}
+
+/* Node and shape styling */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node polygon,
+.mermaid .node ellipse {
+  fill: var(--mermaid-secondary-color) !important;
+  stroke: var(--mermaid-border-color) !important;
+  stroke-width: 2px !important;
+}
+
+/* Edge/arrow styling */
+.mermaid .edgePath .path,
+.mermaid .flowchart-link {
+  stroke: var(--mermaid-primary-color) !important;
+  stroke-width: 2px !important;
+}
+
+/* Arrow markers */
+.mermaid marker {
+  fill: var(--mermaid-primary-color) !important;
+  stroke: var(--mermaid-primary-color) !important;
+}
+
+/* Sequence diagram fixes */
+.mermaid .actor {
+  fill: var(--mermaid-secondary-color) !important;
+  stroke: var(--mermaid-border-color) !important;
+}
+
+.mermaid .messageLine0,
+.mermaid .messageLine1 {
+  stroke: var(--mermaid-primary-color) !important;
+}
+
+/* Class diagram fixes */
+.mermaid .classBox {
+  fill: var(--mermaid-secondary-color) !important;
+  stroke: var(--mermaid-border-color) !important;
+}
+
+/* Flowchart specific improvements */
+.mermaid .flowchart .node .label {
+  color: var(--mermaid-text-color) !important;
 }
 
 /* ==========================================
@@ -515,15 +630,20 @@ tbody tr:hover {
 
 @media (max-width: 768px) {
   :root {
-    --ifm-spacing-horizontal: 1rem;
+    --ifm-spacing-horizontal: 0.75rem;
+    --ifm-global-spacing: 0.75rem;
   }
   
   h1 { font-size: 1.75rem; }
   h2 { font-size: 1.5rem; }
   
   .mermaid {
-    padding: 1rem;
+    padding: var(--ifm-global-spacing);
     margin: 1rem 0;
+  }
+  
+  .theme-doc-markdown {
+    padding: 0 var(--ifm-global-spacing);
   }
   
   table {
