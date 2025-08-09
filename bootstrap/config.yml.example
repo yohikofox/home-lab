@@ -1,0 +1,112 @@
+# Configuration Home Lab Bootstrap
+# Copiez vers config.yml et adaptez selon votre environnement
+
+network:
+  domain: "yolo.yt"
+  dns_server: "1.1.1.1" 
+  subnet: "192.168.1.0/24"
+  gateway: "192.168.1.1"
+
+machines:
+  docker_host:
+    ip: "192.168.1.101"
+    hostname: "lenovo"
+    mac: ""  # Laissez vide pour auto-détection
+    user: "homelab"
+    services: 
+      - "portainer"
+      - "nginx_proxy" 
+      - "pihole"
+      - "netdata"
+      - "vaultwarden"
+      - "n8n"
+      - "docusaurus"
+  
+  homeassistant:
+    ip: "192.168.1.100"
+    hostname: "homeassistant"
+    mac: ""  # Laissez vide pour auto-détection  
+    user: "homelab"
+    services:
+      - "homeassistant"
+      - "zigbee2mqtt"
+      - "frigate"
+
+router:
+  ip: "192.168.1.1"
+  model: "netgear_r7100lg"
+  management: "manual"  # "manual" ou "api" si API disponible
+  admin_url: "http://192.168.1.1"
+
+# Configuration des services
+services:
+  portainer:
+    port: 9000
+    admin_user: "admin"
+    admin_password: "[AUTO_GENERATED]"
+    domain: "portainer.yolo.yt"
+    
+  nginx_proxy:
+    ports: [80, 443, 81]
+    admin_email: "admin@yolo.yt"
+    domain: "npm.yolo.yt"
+    
+  pihole:
+    port: 80
+    admin_password: "[AUTO_GENERATED]"
+    domain: "pi.yolo.yt"
+    upstream_dns: ["1.1.1.1", "1.0.0.1"]
+    blocklists:
+      - "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+      - "https://someonewhocares.org/hosts/zero/hosts"
+      
+  vaultwarden:
+    port: 80
+    domain: "vault.yolo.yt"
+    admin_token: "[AUTO_GENERATED]"
+    smtp_host: "smtp-relay.brevo.com"
+    smtp_port: 587
+    smtp_user: "9453ef001@smtp-brevo.com"
+    smtp_password: "[TO_CONFIGURE]"
+    smtp_from: "noreply@yolo.yt"
+    
+  zitadel:
+    ports: [8080, 8443]
+    domain: "auth.yolo.yt"
+    database: "postgres"
+    
+  snipe_it:
+    port: 80
+    domain: "assets.yolo.yt" 
+    database: "mysql"
+    
+  n8n:
+    port: 5678
+    domain: "n8n.yolo.yt"
+    auth_user: "admin"
+    auth_password: "[AUTO_GENERATED]"
+    
+  netdata:
+    port: 19999
+    domain: "monitoring.yolo.yt"
+    
+  docusaurus:
+    port: 3000
+    domain: "docs.yolo.yt"
+
+# Options d'installation  
+options:
+  ssh_key_path: "~/.ssh/homelab_rsa"  # Clé SSH à utiliser/générer
+  backup_before_install: true
+  enable_firewall: true
+  enable_fail2ban: true
+  generate_ssl_certs: true
+  setup_monitoring: true
+  
+# Paramètres de sécurité
+security:
+  password_length: 32
+  password_complexity: true  # Lettres, chiffres, symboles
+  ssh_port: 22
+  disable_password_auth: true
+  secrets_storage: "~/.homelab/secrets"
