@@ -92,10 +92,10 @@ const config: Config = {
       }
     },
     navbar: {
-      title: 'My Site',
+      title: 'Home Lab Documentation',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'Home Lab Logo',
+        src: 'img/homelab-logo.svg',
       },
       items: [
         {
