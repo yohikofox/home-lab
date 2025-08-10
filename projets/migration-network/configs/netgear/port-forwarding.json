@@ -1,0 +1,49 @@
+{
+  "port_forwarding_rules": [
+    {
+      "name": "HTTP_Web_Services",
+      "external_port": 80,
+      "internal_ip": "10.0.0.101",
+      "internal_port": 80,
+      "protocol": "TCP",
+      "enabled": true,
+      "description": "HTTP traffic to Nginx Proxy Manager"
+    },
+    {
+      "name": "HTTPS_Web_Services",
+      "external_port": 443,
+      "internal_ip": "10.0.0.101", 
+      "internal_port": 443,
+      "protocol": "TCP",
+      "enabled": true,
+      "description": "HTTPS traffic to Nginx Proxy Manager"
+    }
+  ],
+  "security_rules": [
+    {
+      "name": "Block_SSH_External",
+      "port": 22,
+      "action": "DENY",
+      "source": "ANY",
+      "description": "Block external SSH access"
+    },
+    {
+      "name": "Block_Docker_Management",
+      "ports": [9000, 81, 19999],
+      "action": "DENY",
+      "source": "EXTERNAL",
+      "description": "Block external access to management interfaces"
+    }
+  ],
+  "migration_notes": {
+    "previous_config": "Huawei router - 80/443 → 192.168.1.101",
+    "new_config": "Netgear R7100LG - 80/443 → 10.0.0.101",
+    "services_behind_proxy": [
+      "Vaultwarden (vault.example.local)",
+      "Zitadel (auth.example.local)", 
+      "Snipe-IT (assets.example.local)",
+      "OctoPrint (print.example.local)",
+      "PiHole Admin (pi.example.local)"
+    ]
+  }
+}

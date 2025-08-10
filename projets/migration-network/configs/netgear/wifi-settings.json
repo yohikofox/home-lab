@@ -1,0 +1,63 @@
+{
+  "wifi_config": {
+    "2_4ghz": {
+      "ssid": "[SSID_À_DÉFINIR]",
+      "password": "[WIFI_PASSWORD_À_DÉFINIR]", 
+      "security": "WPA2-Personal",
+      "channel": "Auto",
+      "channel_width": "20/40MHz",
+      "enabled": true
+    },
+    "5ghz": {
+      "ssid": "[SSID_À_DÉFINIR]_5G",
+      "password": "[WIFI_PASSWORD_À_DÉFINIR]",
+      "security": "WPA2-Personal", 
+      "channel": "Auto",
+      "channel_width": "20/40/80MHz",
+      "enabled": true
+    },
+    "guest_network": {
+      "enabled": false,
+      "ssid": "[GUEST_SSID]",
+      "password": "[GUEST_PASSWORD]",
+      "access_control": "limited"
+    }
+  },
+  "wifi_security": {
+    "wps_enabled": false,
+    "mac_filtering": false,
+    "access_control": "open",
+    "isolation": false
+  },
+  "power_settings": {
+    "transmit_power": "100%",
+    "schedule_enabled": false,
+    "schedule": "00:00-06:00 OFF"
+  },
+  "migration_notes": {
+    "rpi_current_wifi": "Freebox Ultra WiFi",
+    "rpi_new_wifi": "Netgear R7100LG WiFi", 
+    "rpi_ip_change": "Freebox network → 10.0.0.100",
+    "other_devices": "Tous les appareils WiFi à reconnecter"
+  },
+  "devices_to_migrate": [
+    {
+      "device": "Raspberry Pi 4",
+      "current_network": "Freebox WiFi",
+      "new_ip": "10.0.0.100",
+      "priority": "HIGH"
+    },
+    {
+      "device": "Smartphones/Tablets", 
+      "current_network": "Freebox WiFi",
+      "new_ip": "DHCP Pool",
+      "priority": "MEDIUM"
+    },
+    {
+      "device": "IoT Devices",
+      "current_network": "Freebox WiFi", 
+      "new_ip": "DHCP Pool",
+      "priority": "LOW"
+    }
+  ]
+}

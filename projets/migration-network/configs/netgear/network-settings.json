@@ -1,0 +1,41 @@
+{
+  "router_config": {
+    "basic_settings": {
+      "lan_ip": "10.0.0.1",
+      "subnet_mask": "255.255.255.0",
+      "dhcp_enabled": true,
+      "dhcp_start": "10.0.0.2",
+      "dhcp_end": "10.0.0.200",
+      "lease_time": "24h"
+    },
+    "dns_settings": {
+      "primary_dns": "10.0.0.101",
+      "secondary_dns": "1.1.1.1",
+      "tertiary_dns": "1.0.0.1"
+    },
+    "wan_settings": {
+      "connection_type": "DHCP",
+      "dns_from_isp": false,
+      "mtu": "1500"
+    }
+  },
+  "dhcp_reservations": [
+    {
+      "hostname": "docker-host",
+      "mac_address": "[MAC_LENOVO]",
+      "ip_address": "10.0.0.101",
+      "description": "PC Lenovo - Docker Services"
+    },
+    {
+      "hostname": "homeassistant",
+      "mac_address": "[MAC_RPI_WIFI]",
+      "ip_address": "10.0.0.100",
+      "description": "Raspberry Pi 4 - Home Assistant"
+    }
+  ],
+  "notes": {
+    "migration_date": "[À_COMPLÉTER]",
+    "replaced_device": "Huawei Router",
+    "network_change": "192.168.1.x → 10.0.0.x"
+  }
+}
