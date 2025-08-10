@@ -20,4 +20,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.techStack {
+  padding: 4rem 0;
+  background-color: var(--ifm-background-color-secondary);
+}
+
+.techStack h2 {
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-primary);
+}
+
+.techStack ul {
+  list-style: none;
+  padding: 0;
+}
+
+.techStack li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.techStack li:last-child {
+  border-bottom: none;
 }

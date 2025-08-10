@@ -83,7 +83,7 @@ const config: Config = {
       title: 'Home Lab Documentation',
       logo: {
         alt: 'Home Lab Logo',
-        src: 'img/homelab-logo.svg',
+        src: 'img/homelab-logo-512.svg',
       },
       items: [
         {

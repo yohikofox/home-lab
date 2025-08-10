@@ -11,32 +11,32 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: '🏗️ Architecture Modulaire',
+    Svg: require('@site/static/img/architecture_modular.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Infrastructure répartie sur PC Lenovo (services Docker) et Raspberry Pi 4 (domotique).
+        Séparation des préoccupations pour une maintenance optimisée.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: '🔄 Automatisation Complète',
+    Svg: require('@site/static/img/automation_complete.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Workflows N8N pour disaster recovery, monitoring 24/7, et sauvegardes automatiques.
+        Notifications Telegram en temps réel.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: '🔒 Sécurité Intégrée',
+    Svg: require('@site/static/img/security_integrated.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        SSL Let's Encrypt automatique, authentification centralisée Zitadel,
+        et stratégies de sauvegarde robustes.
       </>
     ),
   },

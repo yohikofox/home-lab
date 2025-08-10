@@ -1,0 +1,52 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Circular mask -->
+    <clipPath id="circle-mask">
+      <circle cx="256" cy="256" r="256"/>
+    </clipPath>
+  </defs>
+  
+  <!-- Apply circular mask to entire content -->
+  <g clip-path="url(#circle-mask)">
+    <!-- Background circle with solid green -->
+    <circle cx="256" cy="256" r="256" fill="#2e8555"/>
+    
+    <!-- Server rack representation -->
+    <rect x="106" y="128" width="300" height="256" rx="32" fill="#ffffff" fill-opacity="0.15" stroke="#ffffff" stroke-width="4" stroke-opacity="0.3"/>
+    
+    <!-- Server units with better contrast -->
+    <rect x="128" y="160" width="256" height="42" rx="21" fill="#ffffff" fill-opacity="0.9"/>
+    <rect x="128" y="224" width="256" height="42" rx="21" fill="#ffffff" fill-opacity="0.7"/>
+    <rect x="128" y="288" width="256" height="42" rx="21" fill="#3cad6e"/>
+    <rect x="128" y="352" width="256" height="42" rx="21" fill="#ffffff" fill-opacity="0.5"/>
+    
+    <!-- LED indicators with green theme -->
+    <circle cx="160" cy="181" r="10" fill="#10b981"/>
+    <circle cx="160" cy="245" r="10" fill="#10b981"/>
+    <circle cx="160" cy="309" r="10" fill="#ffffff"/>
+    <circle cx="160" cy="373" r="10" fill="#fbbf24"/>
+    
+    <!-- Docker/Container symbols -->
+    <rect x="342" y="171" width="32" height="21" rx="5" fill="#ffffff" fill-opacity="0.8"/>
+    <rect x="342" y="235" width="32" height="21" rx="5" fill="#ffffff" fill-opacity="0.6"/>
+    <rect x="342" y="299" width="32" height="21" rx="5" fill="#ffffff" fill-opacity="0.9"/>
+    <rect x="342" y="363" width="32" height="21" rx="5" fill="#ffffff" fill-opacity="0.4"/>
+    
+    <!-- Home symbol integrated -->
+    <path d="M42 298 L85 256 L85 405 L42 405 Z" fill="#ffffff" fill-opacity="0.3"/>
+    <polygon points="42,298 64,277 85,298" fill="#ffffff" fill-opacity="0.6"/>
+    
+    <!-- Network/connection lines -->
+    <path d="M405 192 L469 192 M405 256 L469 256 M405 320 L469 320" stroke="#ffffff" stroke-width="16" stroke-linecap="round" stroke-opacity="0.5"/>
+    
+    <!-- Raspberry Pi symbol -->
+    <circle cx="64" cy="448" r="32" fill="#33925d" stroke="#ffffff" stroke-width="5"/>
+    <rect x="48" y="432" width="32" height="32" rx="5" fill="#ffffff" fill-opacity="0.8"/>
+    
+    <!-- Additional server details -->
+    <rect x="200" y="171" width="100" height="10" rx="5" fill="#ffffff" fill-opacity="0.4"/>
+    <rect x="200" y="235" width="100" height="10" rx="5" fill="#ffffff" fill-opacity="0.4"/>
+    <rect x="200" y="299" width="100" height="10" rx="5" fill="#ffffff" fill-opacity="0.6"/>
+    <rect x="200" y="363" width="100" height="10" rx="5" fill="#ffffff" fill-opacity="0.3"/>
+  </g>
+</svg>
