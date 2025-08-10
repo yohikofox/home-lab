@@ -49,18 +49,13 @@ const config: Config = {
         },
         blog: false,
         theme: {
-          customCss: './src/css/globals.css',
+          customCss: './src/css/custom.css',
         },
       } satisfies Preset.Options,
     ],
   ],
 
   themes: ['@docusaurus/theme-mermaid'],
-  
-  plugins: [
-    './plugins/tailwind-plugin.ts',
-    './plugins/alias-plugin.ts',
-  ],
   
   markdown: {
     mermaid: true,
